@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/*Dette er min kode*/
-
 char* getCurrentTime(void);
 int readFile(void);
 
