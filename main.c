@@ -2,7 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-
+k
 
 char* getCurrentTime(void);
 int readFile(void);
