@@ -20,7 +20,9 @@ int readFile(void) {
     char date[20];
     char singleline[20];
     fpointer = fopen("output.txt", "r"); /* For at fortælle at vi vil gerne læse fra det fil, vi bruger derfor "r" */
-    printf("Hej");
+    
+    system("APIGetData\\GetElectricityProductionAPI.exe");
+
     if (fpointer != NULL) {
         int i = 0;
         while (!feof(fpointer)){
