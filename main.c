@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/*YESSSS*/
+/*YESSSS dsfd*/
 
 char* getCurrentTime(void);
 int readFile(void);
