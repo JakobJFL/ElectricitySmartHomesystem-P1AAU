@@ -2,7 +2,6 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-i = 0;
 
 char* getCurrentTime(void);
 int readFile(void);
