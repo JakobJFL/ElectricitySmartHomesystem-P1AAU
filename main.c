@@ -8,6 +8,8 @@ int readFile(void);
 
 int main (void)
 {
+    system("APIGetData\\GetElectricityProductionAPI.exe");
+    
     if (readFile()) {
         printf("NEJ\n");
     }
@@ -21,8 +23,6 @@ int readFile(void) {
     char singleline[20];
     fpointer = fopen("output.txt", "r"); /* For at fortælle at vi vil gerne læse fra det fil, vi bruger derfor "r" */
     
-    system("APIGetData\\GetElectricityProductionAPI.exe");
-
     if (fpointer != NULL) {
         int i = 0;
         while (!feof(fpointer)){
@@ -33,26 +33,10 @@ int readFile(void) {
                 else 
                     price = atof(singleline); /* Konverterer til en double */
             } 
-            if (strcmp(date, getCurrentTime()) == 0) {
-                printf("Pris nu: %0.3f \x9Bre/kWh  - Dato: %s\n",(price/10), date);
-                break;
-            }
             i++;
         }
     }
     else 
         return 1;
     return fclose(fpointer);
-}
-
-char* getCurrentTime(void) {
-    time_t timer;
-    char* buffer;
-    struct tm* tm_info;
-
-    buffer = (char*)malloc(15);
-    timer = time(NULL);
-    tm_info = localtime(&timer);
-    strftime(buffer, 15, "%Y-%m-%d %H", tm_info);
-    return buffer;
 }
