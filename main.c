@@ -5,7 +5,7 @@
 
 char* getCurrentTime(void);
 int readFile(void);
-double getEvCharging(double evArray[], int evArrayLen, double pro_ex, int* numOfEvCharging, double limit);
+double getEvCharging(double evArray[], int evArrayLen, double pro_ex, int* numOfEvCharging);
 void generateEvArray(double evArray[], int evArrayLen);
 int cmpFun(const void *ep1, const void *ep2);
 void printArray(double array[], int arrayLen);
@@ -56,28 +56,17 @@ int readFile(void) {
                 else {
                     kat = atof(singleline); /* Konverterer til en double !!HELLO!! */
                     pro_ex = kat;
-                    /*
-                    proArray[i] = kat;
-                    i++;
-                    */
-                    //pro_ex = kat; 
                 }
             }
 
-            pro_exPlusCharging = getEvCharging(evArray, evArrayLen, pro_ex, &numOfEvCharging, limit);
+            pro_exPlusCharging = getEvCharging(evArray, evArrayLen, pro_ex, &numOfEvCharging);
             double sum = 0;
             for(int i = 0; i < evArrayLen; i++) {
                 sum += evArray[i];
             }
             printf("Ev charging now: %d Time: %s | pro: %f | proG: %f | sum: %f \n", numOfEvCharging, date, pro_exPlusCharging, pro_ex, sum); 
         }
-        /*
-        qsort(proArray, 400, sizeof(double), cmpFun);
-        limit = proArray[50];
 
-        //printArray(proArray, 400);
-        printf("limit: %f", limit);
-        */
     }
     else 
         return 1;
@@ -87,13 +76,13 @@ int readFile(void) {
     return fclose(fpointer);
 }
 
-double getEvCharging(double evArray[], int evArrayLen, double pro_ex, int* numOfEvCharging, double limit) {
+double getEvCharging(double evArray[], int evArrayLen, double pro_ex, int* numOfEvCharging) {
     int pro_exTing = 0;
     int chargeRate = 11;
     
     *numOfEvCharging = 0;
     int i = 1;
-    while (pro_ex+pro_exTing <limit && i < evArrayLen) {
+    while (pro_ex+pro_exTing < 1000 && i < evArrayLen) {
         //printf(" [%f] ", pro_exTing);
         evArray[i] += 0.000916;
         ++(*numOfEvCharging);
