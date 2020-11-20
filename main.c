@@ -17,7 +17,7 @@ int main (void) {
     printf("Do you want to get data? Type \"y\" for yes and \"n\" for no: ");
     scanf(" %c", &yn);
     if (yn == 'y') {
-        system("APIGetData\\GetElectricityProductionAPI.exe");
+        system("APIGetElspotPrices\\ElspotPrices.exe");
     }
     
     printf("Reading file: \n");
@@ -34,39 +34,22 @@ int readFile(void) {
     int batCapacity = 50;
 
     FILE *fpointer;
-    double pro_ex = 0;
-    int numOfEvCharging = 0;
-    double pro_exPlusCharging = 0;
+    double prices = 0;
     char date[20];
-    char singleline[20];
-    double kat = 0;
-    double proArray[400];
-    double limit = 0;
-    fpointer = fopen("output.txt", "r"); /* For at fortælle at vi vil gerne læse fra det fil, vi bruger derfor "r" */
+    char singleline[25];
+
+    fpointer = fopen("APIGetElspotPrices\\output.csv", "r"); /* For at fortælle at vi vil gerne læse fra det fil, vi bruger derfor "r" */
     generateEvArray(evArray, evArrayLen);
     qsort(evArray, evArrayLen, sizeof(double), cmpFun);
-    int i = 0;
 
     if (fpointer != NULL) {
         while (!feof(fpointer)){
-            for(int x = 0; x < 2; x++) {
-                fgets(singleline, 20, fpointer); /* For at læse den linje pr. linje */
-                if (x % 2 == 0) 
-                    memcpy(date, strtok(singleline, "\n"), sizeof(singleline));
-                else {
-                    kat = atof(singleline); /* Konverterer til en double !!HELLO!! */
-                    pro_ex = kat;
-                }
-            }
+            fgets(singleline, 25, fpointer); /* For at læse den linje pr. linje */
+            sscanf(singleline, "%[^;];%lf", &date, &prices);
+            
+            printf("%s, %.2f\n", date, prices);
 
-            pro_exPlusCharging = getEvCharging(evArray, evArrayLen, pro_ex, &numOfEvCharging);
-            double sum = 0;
-            for(int i = 0; i < evArrayLen; i++) {
-                sum += evArray[i];
-            }
-            printf("Ev charging now: %d Time: %s | pro: %f | proG: %f | sum: %f \n", numOfEvCharging, date, pro_exPlusCharging, pro_ex, sum); 
         }
-
     }
     else 
         return 1;
