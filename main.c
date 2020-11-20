@@ -102,7 +102,7 @@ void generateEvArray(double evArray[], int evArrayLen){
 
 int cmpFun(const void *ep1, const void *ep2) {
     double *tp1 = (double *)ep1,
-          *tp2 = (double *)ep2;
+           *tp2 = (double *)ep2;
     
     if(*tp1 < *tp2) 
         return -1;
