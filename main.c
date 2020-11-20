@@ -46,9 +46,7 @@ int readFile(void) {
         while (!feof(fpointer)){
             fgets(singleline, 25, fpointer); /* For at læse den linje pr. linje */
             sscanf(singleline, "%[^;];%lf", &date, &prices);
-            
             printf("%s, %.2f\n", date, prices);
-
         }
     }
     else 
