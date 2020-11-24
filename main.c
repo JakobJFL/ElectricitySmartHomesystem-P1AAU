@@ -15,9 +15,9 @@ typedef struct {
 int readFile(elspotPrices elPrArray[], int elPrArraylen);
 void generateEvArray(float evArray[], int evArrayLen, int batCapacity);
 elspotPrices makeElspotPrice(char date[DATE_MAX_LENGTH], float price);
-double sumOfbatChargedNeeded(float evArray[], int evArrayLen, int batCapacity);
+double sumOfbatCharged(float evArray[], int evArrayLen);
 int compareElspotPrices(const void *ep1, const void *ep2);
-int chargeEvOneHour(float evArray[], int evArrayLen, float batThreshold, float batChargeSpeed);
+int chargeEvOneHour(float evArray[], int evArrayLen, float batThreshold, float batChargeSpeed, int evToCharge, float batCapacity);
 void printElspotPricesArray(elspotPrices array[], int arrayLength);
 void printFloatArray(float array[], int arrayLength);
 
@@ -41,25 +41,27 @@ int main (void) {
     qsort(elPrArray, elPrArrayLen, sizeof(elspotPrices), compareElspotPrices);
     printElspotPricesArray(elPrArray, elPrArrayLen);
 
-    int evArrayLen = 100;
+    int evArrayLen = 500000;
     float* evArray = (float*)malloc(evArrayLen*sizeof(float)); 
 
-    generateEvArray(evArray, evArrayLen, 50);
+    generateEvArray(evArray, evArrayLen, 65);
 
     printf("EvArray:\n");
-    printFloatArray(evArray, evArrayLen);
-    printf("sum: %f", sumOfbatChargedNeeded(evArray, evArrayLen, 50));
+    //printFloatArray(evArray, evArrayLen);
+    double sum1 = sumOfbatCharged(evArray, evArrayLen);
 
     int numOfEvCharged = 1;
     int hourCount = 0;
+    int evToChargeThreshold = (evArrayLen/15)*(50/11);
     while (numOfEvCharged > 0) {
-        numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, 40, 11);
         hourCount++;
+        numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, 50, 11, evToChargeThreshold*hourCount, 65);
+        printf("Time %d: batCharged: %.2f | eVCharging %d \n", hourCount, sumOfbatCharged(evArray, evArrayLen)-sum1, numOfEvCharged);
     }
     printf("After EvArray:\n");
-    printFloatArray(evArray, evArrayLen);
-    printf("det tog: %d\n", hourCount);
-    printf("sum: %f", sumOfbatChargedNeeded(evArray, evArrayLen, 50));
+    printf("det tog: %d timer\n", hourCount);
+    double sum2 = sumOfbatCharged(evArray, evArrayLen);
+    printf("sum: %f", sum2-sum1);
     free(elPrArray);
     return(0);
 }
@@ -94,7 +96,7 @@ elspotPrices makeElspotPrice(char date[DATE_MAX_LENGTH], float price) {
     return elPr;
 }
 
-double sumOfbatChargedNeeded(float evArray[], int evArrayLen, int batCapacity) {
+double sumOfbatCharged(float evArray[], int evArrayLen) {
     int i;
     double sum = 0;
     for(i = 0; i < evArrayLen; i++) {
@@ -110,12 +112,15 @@ void generateEvArray(float evArray[], int evArrayLen, int batCapacity){
     }
 }
 
-int chargeEvOneHour(float evArray[], int evArrayLen, float batThreshold, float batChargeSpeed) {
+int chargeEvOneHour(float evArray[], int evArrayLen, float batThreshold, float batChargeSpeed, int evToCharge, float batCapacity) {
     int i;
     int numOfEvCharged = 0;
     for(i = 0; i < evArrayLen; i++) {
-        if (evArray[i] < batThreshold) {
+        if (evArray[i] < batThreshold && i <= evToCharge) {
             evArray[i] += batChargeSpeed;
+            if (evArray[i] > batCapacity) {
+                evArray[i] = batCapacity;
+            }
             numOfEvCharged++;
         }
     }
@@ -137,8 +142,9 @@ int compareElspotPrices(const void *p1, const void *p2) {
 void printFloatArray(float array[], int arrayLength) {
     int i;
     for(i = 0; i < arrayLength; i++) {
-        printf("%.2f \n", array[i]);
+        printf(" %.2f, ", array[i]);
     }
+    printf("\n");
 }
 
 void printElspotPricesArray(elspotPrices array[], int arrayLength) {
