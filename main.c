@@ -12,13 +12,12 @@ typedef struct {
     float price;
 }elspotPrices;
 
-char* getCurrentTime(void);
 int readFile(elspotPrices elPrArray[], int elPrArraylen);
-double getEvCharging(double evArray[], int evArrayLen, double pro_ex, int* numOfEvCharging);
-void generateEvArray(float evArray[], int evArrayLen);
+void generateEvArray(float evArray[], int evArrayLen, int batCapacity);
 elspotPrices makeElspotPrice(char date[DATE_MAX_LENGTH], float price);
-double sumOfbatChargedNeeded(float evArray[], int evArrayLen);
-int compare(const void *ep1, const void *ep2);
+double sumOfbatChargedNeeded(float evArray[], int evArrayLen, int batCapacity);
+int compareElspotPrices(const void *ep1, const void *ep2);
+int chargeEvOneHour(float evArray[], int evArrayLen, float batThreshold, float batChargeSpeed);
 void printElspotPricesArray(elspotPrices array[], int arrayLength);
 void printFloatArray(float array[], int arrayLength);
 
@@ -26,28 +25,41 @@ int main (void) {
     srand(10);
 
     char yn;
+    int elPrArrayLen = 31;
+
     printf("Do you want to get data? Type \"y\" for yes and \"n\" for no: ");
     scanf(" %c", &yn);
     if (yn == 'y') {
         system("APIGetelspotPrices\\elspotPrices.exe");
     }
-    int elPrArrayLen = 30;
     elspotPrices* elPrArray = (elspotPrices*)malloc(elPrArrayLen*sizeof(elspotPrices)); 
     printf("Reading file: \n");
 
     if (readFile(elPrArray, elPrArrayLen)) {
         printf("Error 404: file not found.\n");
     }
-    qsort(elPrArray, elPrArrayLen, sizeof(elspotPrices), compare);
+    qsort(elPrArray, elPrArrayLen, sizeof(elspotPrices), compareElspotPrices);
     printElspotPricesArray(elPrArray, elPrArrayLen);
-    
+
     int evArrayLen = 100;
     float* evArray = (float*)malloc(evArrayLen*sizeof(float)); 
 
-    generateEvArray(evArray, evArrayLen);
-    printFloatArray(evArray, evArrayLen);
-    printf("sum: %f", sumOfbatChargedNeeded(evArray, evArrayLen));
+    generateEvArray(evArray, evArrayLen, 50);
 
+    printf("EvArray:\n");
+    printFloatArray(evArray, evArrayLen);
+    printf("sum: %f", sumOfbatChargedNeeded(evArray, evArrayLen, 50));
+
+    int numOfEvCharged = 1;
+    int hourCount = 0;
+    while (numOfEvCharged > 0) {
+        numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, 40, 11);
+        hourCount++;
+    }
+    printf("After EvArray:\n");
+    printFloatArray(evArray, evArrayLen);
+    printf("det tog: %d\n", hourCount);
+    printf("sum: %f", sumOfbatChargedNeeded(evArray, evArrayLen, 50));
     free(elPrArray);
     return(0);
 }
@@ -59,7 +71,7 @@ int readFile(elspotPrices elPrArray[], int elPrArrayLen) {
     char singleline[25];
     int i = 0;
 
-    fpointer = fopen("APIGetelspotPrices\\output.csv", "r"); /* For at fortælle at vi vil gerne læse fra den fil, vi bruger derfor "r" */
+    fpointer = fopen("output.csv", "r"); /* For at fortælle at vi vil gerne læse fra den fil, vi bruger derfor "r" */
     if (fpointer != NULL) {
         while (!feof(fpointer)){
             fgets(singleline, 25, fpointer); /* For at læse den linje pr. linje */
@@ -71,7 +83,7 @@ int readFile(elspotPrices elPrArray[], int elPrArrayLen) {
     }
     else 
         return 1;
-
+    
     return fclose(fpointer);
 }
 
@@ -82,41 +94,35 @@ elspotPrices makeElspotPrice(char date[DATE_MAX_LENGTH], float price) {
     return elPr;
 }
 
-double getEvCharging(double evArray[], int evArrayLen, double pro_ex, int* numOfEvCharging) {
-    int pro_exTing = 0;
-    int chargeRate = 11;
-    
-    *numOfEvCharging = 0;
-    int i = 1;
-    while (pro_ex+pro_exTing < 1000 && i < evArrayLen) {
-        //printf(" [%f] ", pro_exTing);
-        evArray[i] += 0.000916;
-        ++(*numOfEvCharging);
-        pro_exTing = (0.000916)*i;
-        i++;
-    }
-    //printf(" {{{%f}} ",pro_ex+pro_exTing);
-
-    return pro_ex+pro_exTing;
-}
-
-double sumOfbatChargedNeeded(float evArray[], int evArrayLen) {
+double sumOfbatChargedNeeded(float evArray[], int evArrayLen, int batCapacity) {
     int i;
-    int batCapacity = 50;
     double sum = 0;
     for(i = 0; i < evArrayLen; i++) {
-        sum += ((100 - evArray[i])/100)*batCapacity;
+        sum += evArray[i];
     }
     return sum;
 }
 
-void generateEvArray(float evArray[], int evArrayLen){
-    for (int i = 0; i < evArrayLen; i++){
-        evArray[i] = rand() % (100-10) + 10;
+void generateEvArray(float evArray[], int evArrayLen, int batCapacity){
+    int i;
+    for (i = 0; i < evArrayLen; i++){
+        evArray[i] = rand() % (batCapacity-10) + 10;
     }
 }
 
-int compare(const void *p1, const void *p2) {
+int chargeEvOneHour(float evArray[], int evArrayLen, float batThreshold, float batChargeSpeed) {
+    int i;
+    int numOfEvCharged = 0;
+    for(i = 0; i < evArrayLen; i++) {
+        if (evArray[i] < batThreshold) {
+            evArray[i] += batChargeSpeed;
+            numOfEvCharged++;
+        }
+    }
+    return numOfEvCharged;
+}
+
+int compareElspotPrices(const void *p1, const void *p2) {
     const elspotPrices *elem1 = p1;    
     const elspotPrices *elem2 = p2;
 
@@ -125,8 +131,7 @@ int compare(const void *p1, const void *p2) {
         else if (elem1->price > elem2->price)
             return 1;
         else
-            return 0;
-        
+            return 0; 
 }
 
 void printFloatArray(float array[], int arrayLength) {
