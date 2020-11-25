@@ -1,72 +1,64 @@
-//todo: 36 linjer data.
-
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define DATE_MAX_LENGTH 15
+#define SPOT_PRICES_LEN 31
 
 typedef struct {
     char date[DATE_MAX_LENGTH];
     float price;
-}elspotPrices;
+}spotPrices;
 
-int readFile(elspotPrices elPrArray[], int elPrArraylen);
+int readFile(spotPrices elPrArray[], int elPrArraylen);
 void generateEvArray(float evArray[], int evArrayLen, int batCapacity);
-elspotPrices makeElspotPrice(char date[DATE_MAX_LENGTH], float price);
+spotPrices makeElspotPrice(char date[DATE_MAX_LENGTH], float price);
 double sumOfbatCharged(float evArray[], int evArrayLen);
-int compareElspotPrices(const void *ep1, const void *ep2);
+int comparespotPrices(const void *ep1, const void *ep2);
 int chargeEvOneHour(float evArray[], int evArrayLen, float batThreshold, float batChargeSpeed, int evToCharge, float batCapacity);
-void printElspotPricesArray(elspotPrices array[], int arrayLength);
+void printspotPricesArray(spotPrices array[], int arrayLength);
 void printFloatArray(float array[], int arrayLength);
+void chargeEV(float evArray[], int evArrayLen);
+void askForNewData(void);
 
 int main (void) {
     srand(10);
 
-    char yn;
-    int elPrArrayLen = 31;
+    askForNewData();
 
-    printf("Do you want to get data? Type \"y\" for yes and \"n\" for no: ");
-    scanf(" %c", &yn);
-    if (yn == 'y') {
-        system("APIGetelspotPrices\\elspotPrices.exe");
-    }
-    elspotPrices* elPrArray = (elspotPrices*)malloc(elPrArrayLen*sizeof(elspotPrices)); 
+    spotPrices* elPrArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices)); 
     printf("Reading file: \n");
-
-    if (readFile(elPrArray, elPrArrayLen)) {
+    if (readFile(elPrArray, SPOT_PRICES_LEN)) {
         printf("Error 404: file not found.\n");
     }
-    qsort(elPrArray, elPrArrayLen, sizeof(elspotPrices), compareElspotPrices);
-    printElspotPricesArray(elPrArray, elPrArrayLen);
+    qsort(elPrArray, SPOT_PRICES_LEN, sizeof(spotPrices), comparespotPrices);
+    printspotPricesArray(elPrArray, SPOT_PRICES_LEN);
 
-    int evArrayLen = 500000;
+    int evArrayLen = 17000;
     float* evArray = (float*)malloc(evArrayLen*sizeof(float)); 
 
     generateEvArray(evArray, evArrayLen, 65);
 
     printf("EvArray:\n");
     //printFloatArray(evArray, evArrayLen);
-    double sum1 = sumOfbatCharged(evArray, evArrayLen);
+    chargeEV(evArray, evArrayLen);
 
-    int numOfEvCharged = 1;
-    int hourCount = 0;
-    int evToChargeThreshold = (evArrayLen/15)*(50/11);
-    while (numOfEvCharged > 0) {
-        hourCount++;
-        numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, 50, 11, evToChargeThreshold*hourCount, 65);
-        printf("Time %d: batCharged: %.2f | eVCharging %d \n", hourCount, sumOfbatCharged(evArray, evArrayLen)-sum1, numOfEvCharged);
-    }
-    printf("After EvArray:\n");
-    printf("det tog: %d timer\n", hourCount);
-    double sum2 = sumOfbatCharged(evArray, evArrayLen);
-    printf("sum: %f", sum2-sum1);
     free(elPrArray);
+
     return(0);
 }
 
-int readFile(elspotPrices elPrArray[], int elPrArrayLen) {
+void askForNewData(void) {
+    char yn;
+    printf("Do you want to get data? Type \"y\" for yes and \"n\" for no: ");
+    scanf(" %c", &yn);
+    if (yn == 'y') {
+        system("APIGetspotPrices\\spotPrices.exe");
+    }
+}
+
+int readFile(spotPrices elPrArray[], int elPrArrayLen) {
     FILE *fpointer;
     float price = 0;
     char date[DATE_MAX_LENGTH];
@@ -83,17 +75,56 @@ int readFile(elspotPrices elPrArray[], int elPrArrayLen) {
             i++;
         }
     }
-    else 
-        return 1;
+    else return 1;
     
     return fclose(fpointer);
 }
 
-elspotPrices makeElspotPrice(char date[DATE_MAX_LENGTH], float price) {
-    elspotPrices elPr;
-    strcpy(elPr.date, date);
-    elPr.price = price;
-    return elPr;
+/* spotPrices.c */
+
+spotPrices makeElspotPrice(char date[DATE_MAX_LENGTH], float price) {
+    spotPrices spotPr;
+    strcpy(spotPr.date, date);
+    spotPr.price = price;
+    return spotPr;
+}
+
+int comparespotPrices(const void *p1, const void *p2) {
+    const spotPrices *elem1 = p1;    
+    const spotPrices *elem2 = p2;
+
+    if (elem1->price < elem2->price)
+            return -1;
+        else if (elem1->price > elem2->price)
+            return 1;
+        else
+            return 0; 
+}
+
+void printspotPricesArray(spotPrices array[], int arrayLength) {
+    int i;
+    for(i = 0; i < arrayLength; i++) {
+        printf("%s, ", array[i].date);
+        printf("%.2f\n", array[i].price);
+    }
+}
+
+/* ElectricVehicle.c */
+void chargeEV(float evArray[], int evArrayLen) {
+    double sum1 = sumOfbatCharged(evArray, evArrayLen);
+
+    int numOfEvCharged = 1;
+    int hourCount = 0;
+    int evToChargeThreshold = (evArrayLen/15)*(50/11);
+    while (numOfEvCharged > 0) {
+        hourCount++;
+        numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, 50, 11, evToChargeThreshold*hourCount, 65);
+        printf("Time %d: batCharged: %.2f | eVCharging %d \n", hourCount, sumOfbatCharged(evArray, evArrayLen)-sum1, numOfEvCharged);
+    }
+    printf("After EvArray:\n");
+    printf("det tog: %d timer\n", hourCount);
+    double sum2 = sumOfbatCharged(evArray, evArrayLen);
+    printf("sum: %f", sum2-sum1);
 }
 
 double sumOfbatCharged(float evArray[], int evArrayLen) {
@@ -127,18 +158,6 @@ int chargeEvOneHour(float evArray[], int evArrayLen, float batThreshold, float b
     return numOfEvCharged;
 }
 
-int compareElspotPrices(const void *p1, const void *p2) {
-    const elspotPrices *elem1 = p1;    
-    const elspotPrices *elem2 = p2;
-
-    if (elem1->price < elem2->price)
-            return -1;
-        else if (elem1->price > elem2->price)
-            return 1;
-        else
-            return 0; 
-}
-
 void printFloatArray(float array[], int arrayLength) {
     int i;
     for(i = 0; i < arrayLength; i++) {
@@ -146,13 +165,4 @@ void printFloatArray(float array[], int arrayLength) {
     }
     printf("\n");
 }
-
-void printElspotPricesArray(elspotPrices array[], int arrayLength) {
-    int i;
-    for(i = 0; i < arrayLength; i++) {
-        printf("%s, ", array[i].date);
-        printf("%.2f\n", array[i].price);
-    }
-}
-
 
