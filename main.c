@@ -11,8 +11,15 @@ typedef struct {
     float price;
 }spotPrices;
 
+typedef struct {
+    /* Tesla Model 3, Renault Zoe og Hyundai Kona */
+    float chargeRate;
+    float capacity;
+}eVdata;
+
 int readFile(spotPrices elPrArray[], int elPrArraylen);
 void generateEvArray(float evArray[], int evArrayLen, int batCapacity);
+eVdata eVSpecs (float chargeRate, float capacity);
 spotPrices makeElspotPrice(char date[DATE_MAX_LENGTH], float price);
 double sumOfbatCharged(float evArray[], int evArrayLen);
 int comparespotPrices(const void *ep1, const void *ep2);
@@ -47,6 +54,26 @@ int main (void) {
     free(elPrArray);
 
     return(0);
+}
+
+eVdata eVSpecs (float chargeRate, float capacity) {
+    eVdata tesla;
+    eVdata hyundai;
+    eVdata renault;
+    /* ChargeRate = kW */
+    /* Capacity = kWh */
+    tesla.chargeRate = 11;
+    tesla.capacity = 50;
+
+    hyundai.chargeRate = 10.5;
+    hyundai.capacity = 67.5;
+    
+    renault.chargeRate = 11;
+    renault.capacity = 52;
+    printf("hej");
+    printf("chargerate: %f, cap: %f", tesla.chargeRate, tesla.capacity);
+
+    return tesla, hyundai, renault;
 }
 
 void askForNewData(void) {
@@ -165,4 +192,3 @@ void printFloatArray(float array[], int arrayLength) {
     }
     printf("\n");
 }
-
