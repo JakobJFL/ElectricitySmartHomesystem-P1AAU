@@ -20,12 +20,14 @@ int main (void) {
     if (readFile(elPrArray, SPOT_PRICES_LEN)) {
         printf("Error 404: file not found.\n");
     }
+
     qsort(elPrArray, SPOT_PRICES_LEN, sizeof(spotPrices), comparespotPrices);
     printspotPricesArray(elPrArray, SPOT_PRICES_LEN);
-
     int evArrayLen = 17000;
     electricVehicle* evArray = (electricVehicle*)malloc(evArrayLen*sizeof(electricVehicle)); 
     generateEvArray(evArray, evArrayLen);
+
+    //findRelevantspotprices(elPrArray);
 
     printf("EvArray:\n");
     //printEV(evArray, evArrayLen);
@@ -48,7 +50,7 @@ void askForNewData(void) {
 int readFile(spotPrices elPrArray[], int elPrArrayLen) {
     FILE *fpointer;
     float price = 0;
-    char date[DATE_MAX_LENGTH];
+    char date[DATE_MAX_CHARS];
     char singleline[25];
     int i = 0;
 

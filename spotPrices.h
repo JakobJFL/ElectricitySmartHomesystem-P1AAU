@@ -4,13 +4,14 @@
 #include <string.h>
 
 #define SPOT_PRICES_LEN 37
-#define DATE_MAX_LENGTH 15
+#define DATE_MAX_CHARS 15
 
 typedef struct {
-    char date[DATE_MAX_LENGTH];
+    char date[DATE_MAX_CHARS];
     float price;
 }spotPrices;
 
-spotPrices makeElspotPrice(char date[DATE_MAX_LENGTH], float price);
+spotPrices makeElspotPrice(char date[DATE_MAX_CHARS], float price);
 int comparespotPrices(const void *ep1, const void *ep2);
 void printspotPricesArray(spotPrices array[], int arrayLength);
+//void findRelevantspotprices(spotPrices array[]);
