@@ -2,8 +2,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-#include "electricVehicle.h"
 #include "spotPrices.h"
+#include "electricVehicle.h"
 
 #define DATE_MAX_LENGTH 15
 
@@ -11,6 +11,7 @@ void askForNewData(void);
 int readFile(spotPrices elPrArray[], int elPrArraylen);
 
 int main (void) {
+    int newArrayLen = 0;
     srand(10);
 
     askForNewData();
@@ -20,20 +21,22 @@ int main (void) {
     if (readFile(elPrArray, SPOT_PRICES_LEN)) {
         printf("Error 404: file not found.\n");
     }
-    qsort(elPrArray, SPOT_PRICES_LEN, sizeof(spotPrices), comparespotPrices);
-    printspotPricesArray(elPrArray, SPOT_PRICES_LEN);
+    newArrayLen = getArrayLenPricesNow(elPrArray, SPOT_PRICES_LEN);
+
+    qsort(elPrArray, newArrayLen, sizeof(spotPrices), comparespotPrices);
 
     int evArrayLen = 17000;
     electricVehicle* evArray = (electricVehicle*)malloc(evArrayLen*sizeof(electricVehicle)); 
     generateEvArray(evArray, evArrayLen);
 
+
     printf("EvArray:\n");
     //printEV(evArray, evArrayLen);
-    chargeEV(evArray, evArrayLen);
+    chargeEV(evArray, evArrayLen, elPrArray);
 
     free(elPrArray);
 
-    return(0);
+    return 0;
 }
 
 void askForNewData(void) {
@@ -48,7 +51,7 @@ void askForNewData(void) {
 int readFile(spotPrices elPrArray[], int elPrArrayLen) {
     FILE *fpointer;
     float price = 0;
-    char date[DATE_MAX_LENGTH];
+    char date[DATE_MAX_CHARS];
     char singleline[25];
     int i = 0;
 

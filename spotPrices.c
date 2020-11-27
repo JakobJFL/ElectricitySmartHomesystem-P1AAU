@@ -1,7 +1,8 @@
 /* spotPrices.c */
+#include <string.h>
 #include "spotPrices.h"
 
-spotPrices makeElspotPrice(char date[DATE_MAX_LENGTH], float price) {
+spotPrices makeElspotPrice(char date[DATE_MAX_CHARS], float price) {
     spotPrices spotPr;
     strcpy(spotPr.date, date);
     spotPr.price = price;
@@ -26,4 +27,19 @@ void printspotPricesArray(spotPrices array[], int arrayLength) {
         printf("%s, ", array[i].date);
         printf("%.2f\n", array[i].price);
     }
+}
+
+int getArrayLenPricesNow(spotPrices array[], int arrayLen) {
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    char timeDate[DATE_MAX_CHARS];
+    
+    sprintf(timeDate, "%d-%02d-%02d %02d", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour);
+    int i;
+    for (i = 0; i < arrayLen; i++) {
+        if (strcmp(array[i].date, timeDate) == 0) {
+            return i+1;
+        }
+    } 
+    return 0; 
 }

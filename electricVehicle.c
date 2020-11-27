@@ -1,7 +1,8 @@
 /* ElectricVehicle.c*/
+#include "spotPrices.h"
 #include "electricVehicle.h"
 
-void chargeEV(electricVehicle evArray[], int evArrayLen) {
+void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[]) {
     double sum1 = sumOfbatCharged(evArray, evArrayLen);
 
     int numOfEvCharged = 1;
@@ -13,12 +14,12 @@ void chargeEV(electricVehicle evArray[], int evArrayLen) {
         hourCount++;
         numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, evToChargeThreshold*hourCount);
         float batCharged = sumOfbatCharged(evArray, evArrayLen)-sum1;
-        printf("Time %d: batCharged: %.2f | eVCharging %d \n", hourCount, batCharged, numOfEvCharged);
+        printf("%d | Time: %s | batCharged: %.2f | eVCharging %d | Pris: %.2f\n", hourCount, elPrArray[hourCount-1].date, batCharged, numOfEvCharged, elPrArray[hourCount-1].price);
     }
     printf("After EvArray:\n");
-    printf("det tog: %d timer\n", hourCount);
+    printf("Det tog: %d timer\n", hourCount);
     double sum2 = sumOfbatCharged(evArray, evArrayLen);
-    printf("sum: %f", sum2-sum1);
+    printf("BatCharged: %.2f", sum2-sum1);
 }
 
 double sumOfbatCharged(electricVehicle evArray[], int evArrayLen) {
