@@ -8,12 +8,13 @@ void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[])
     int numOfEvCharged = 1;
     int hourCount = 0;
     int evToChargeThreshold = evArrayLen/3;
+    float batCharged = 0;
 
     //printEV(evArray, evArrayLen);
     while (numOfEvCharged > 0) {
         hourCount++;
         numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, evToChargeThreshold*hourCount);
-        float batCharged = sumOfbatCharged(evArray, evArrayLen)-sum1;
+        batCharged = sumOfbatCharged(evArray, evArrayLen)-sum1;
         printf("%d | Time: %s | batCharged: %.2f | eVCharging %d | Pris: %.2f\n", hourCount, elPrArray[hourCount-1].date, batCharged, numOfEvCharged, elPrArray[hourCount-1].price);
     }
     printf("After EvArray:\n");
