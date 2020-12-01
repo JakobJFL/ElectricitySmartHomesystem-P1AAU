@@ -34,19 +34,19 @@ double sumOfbatCharged(electricVehicle evArray[], int evArrayLen) {
 void generateEvArray(electricVehicle evArray[], int evArrayLen) {
     int evArrayStart = 0;
     int evArrayEnd = evArrayLen*PCT_TESLA;
-    generateKatArray(evArray, evArrayStart, evArrayEnd, tesla);
+    generateCustomArray(evArray, evArrayStart, evArrayEnd, tesla);
     evArrayStart += evArrayLen*PCT_TESLA;
     evArrayEnd += evArrayLen*PCT_HYUNDAI;
-    generateKatArray(evArray, evArrayStart, evArrayEnd, huyndai);
+    generateCustomArray(evArray, evArrayStart, evArrayEnd, huyndai);
     evArrayStart += evArrayLen*PCT_HYUNDAI;
     evArrayEnd += evArrayLen*PCT_RENAULT;
-    generateKatArray(evArray, evArrayStart, evArrayEnd, renault);
+    generateCustomArray(evArray, evArrayStart, evArrayEnd, renault);
     evArrayStart += evArrayLen*PCT_RENAULT;
     evArrayEnd = evArrayLen;
-    generateKatArray(evArray, evArrayStart, evArrayEnd, vw);
+    generateCustomArray(evArray, evArrayStart, evArrayEnd, vw);
 }
 
-void generateKatArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd, enum modelType mType) {
+void generateCustomArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd, enum modelType mType) {
     float capacity[] = {65, 64, 52, 35.8};
     float chargeRate[] = {11, 10.5, 11, 7.2};
     char modelName[MODEL_TYPE_LEN][MODEL_NAME_LEN] = {"Tesla Model 3", "Huyndai Kona", "Renault Zoe", "VW e-Golf"};
