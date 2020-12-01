@@ -21,7 +21,7 @@ int main (void) {
     if (readFile(elPrArray, SPOT_PRICES_LEN)) {
         printf("Error 404: file not found.\n");
     }
-    newArrayLen = getArrayLenPricesNow(elPrArray, SPOT_PRICES_LEN);
+    newArrayLen = getNewArrayLenIndex(elPrArray, SPOT_PRICES_LEN);
 
     qsort(elPrArray, newArrayLen, sizeof(spotPrices), comparespotPrices);
 
