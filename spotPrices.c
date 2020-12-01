@@ -1,6 +1,6 @@
 /* spotPrices.c */
-#include <string.h>
 #include "spotPrices.h"
+#include "allErrorFile.h"
 
 spotPrices makeElspotPrice(char date[DATE_MAX_CHARS], float price) {
     spotPrices spotPr;
@@ -29,7 +29,7 @@ void printspotPricesArray(spotPrices array[], int arrayLength) {
     }
 }
 
-int getArrayLenPricesNow(spotPrices array[], int arrayLen) {
+int getArrayIndexForPricesNow(spotPrices array[], int arrayLen) {
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     char timeDate[DATE_MAX_CHARS];
@@ -40,6 +40,7 @@ int getArrayLenPricesNow(spotPrices array[], int arrayLen) {
         if (strcmp(array[i].date, timeDate) == 0) {
             return i+1;
         }
-    } 
+    }
+    printError(202);
     return 0; 
 }

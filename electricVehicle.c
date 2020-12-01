@@ -1,6 +1,7 @@
 /* ElectricVehicle.c*/
 #include "spotPrices.h"
 #include "electricVehicle.h"
+#include "allErrorFile.h"
 
 void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[]) {
     double sum1 = sumOfbatCharged(evArray, evArrayLen);
