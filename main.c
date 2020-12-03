@@ -4,6 +4,7 @@
 #include <string.h>
 #include "spotPrices.h"
 #include "electricVehicle.h"
+#include "allErrorFile.h"
 
 #define DATE_MAX_LENGTH 15
 
@@ -17,18 +18,24 @@ int main (void) {
     askForNewData();
 
     spotPrices* elPrArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices)); 
+    if (elPrArray == NULL) {
+        printError(100);
+    }
+
     printf("Reading file: \n");
     if (readFile(elPrArray, SPOT_PRICES_LEN)) {
-        printf("Error 404: file not found.\n");
+        printError(404);
     }
-    newArrayLen = getNewArrayLenIndex(elPrArray, SPOT_PRICES_LEN);
-
+    newArrayLen = getArrayIndexForPricesNow(elPrArray, SPOT_PRICES_LEN);
+  
     qsort(elPrArray, newArrayLen, sizeof(spotPrices), comparespotPrices);
-
-    int evArrayLen = 17000;
+    //printspotPricesArray(elPrArray, newArrayLen);
+    int evArrayLen = 500000;
     electricVehicle* evArray = (electricVehicle*)malloc(evArrayLen*sizeof(electricVehicle)); 
+    if (evArray == NULL) {
+        printError(100);
+    }
     generateEvArray(evArray, evArrayLen);
-
 
     printf("EvArray:\n");
     //printEV(evArray, evArrayLen);
@@ -54,18 +61,23 @@ int readFile(spotPrices elPrArray[], int elPrArrayLen) {
     char date[DATE_MAX_CHARS];
     char singleline[25];
     int i = 0;
+    int numOfLineData = 0;
 
     fpointer = fopen("output.csv", "r"); /* For at fortælle at vi vil gerne læse fra den fil, vi bruger derfor "r" */
     if (fpointer != NULL) {
         while (!feof(fpointer)){
             fgets(singleline, 25, fpointer); /* For at læse den linje pr. linje */
-            sscanf(singleline, "%[^;];%f", &date, &price);
+            numOfLineData = sscanf(singleline, "%[^;];%f", &date, &price);
             elPrArray[i] = makeElspotPrice(date, price);
-            //printf("%s, %.2f\n", date, price);
+            
+            if (numOfLineData != 2) {
+                printError(201);
+            }
             i++;
         }
     }
-    else return 1;
+    else 
+        return 1;
     
     return fclose(fpointer);
 }

@@ -14,4 +14,4 @@ typedef struct {
 spotPrices makeElspotPrice(char date[DATE_MAX_CHARS], float price);
 int comparespotPrices(const void *ep1, const void *ep2);
 void printspotPricesArray(spotPrices array[], int arrayLength);
-int getArrayLenPricesNow(spotPrices array[], int arrayLen);
+int getArrayIndexForPricesNow(spotPrices array[], int arrayLen);
