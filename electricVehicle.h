@@ -30,3 +30,4 @@ void generateCustomArray(electricVehicle evArray[], int evArrayStart, int evArra
 electricVehicle makeEv(float capacity, float chargerate, float charge, char modelName[MODEL_NAME_LEN]);
 void printEV(electricVehicle array[], int arrayLength);
 void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[]);
+void readFileEV(electricVehicle evArray[]);

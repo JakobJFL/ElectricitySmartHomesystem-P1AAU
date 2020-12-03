@@ -97,3 +97,17 @@ void printEV(electricVehicle array[], int arrayLength) {
     }
     printf("\n");
 }
+
+void readFileEV(electricVehicle evArray[]){
+    FILE *EVdata = fopen("EVdata.csv", "r"); 
+    char singleline[40];
+    int i = 0;
+    int numOfLineData = 0;
+
+    if (EVdata != NULL){
+        while (!feof(EVdata)){
+            fgets(singleline, 40, EVdata);
+            numOfLineData = sscanf(singleline, "%[^;]; %f; %f ", evArray[i].modelName, &evArray[i].capacity, &evArray[i].chargeRate);
+        }
+    }
+}
