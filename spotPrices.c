@@ -30,6 +30,7 @@ void printspotPricesArray(spotPrices array[], int arrayLength) {
 }
 
 int getArrayIndexForPricesNow(spotPrices array[], int arrayLen) {
+
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     char timeDate[DATE_MAX_CHARS];

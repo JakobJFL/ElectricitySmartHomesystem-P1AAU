@@ -27,7 +27,7 @@ int main (void) {
         printError(404);
     }
     newArrayLen = getArrayIndexForPricesNow(elPrArray, SPOT_PRICES_LEN);
-
+  
     qsort(elPrArray, newArrayLen, sizeof(spotPrices), comparespotPrices);
     //printspotPricesArray(elPrArray, newArrayLen);
     int evArrayLen = 500000;
