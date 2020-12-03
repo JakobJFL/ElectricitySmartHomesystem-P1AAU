@@ -30,7 +30,7 @@ int main (void) {
 
     qsort(elPrArray, newArrayLen, sizeof(spotPrices), comparespotPrices);
     //printspotPricesArray(elPrArray, newArrayLen);
-    int evArrayLen = 17000;
+    int evArrayLen = 500000;
     electricVehicle* evArray = (electricVehicle*)malloc(evArrayLen*sizeof(electricVehicle)); 
     if (evArray == NULL) {
         printError(100);

@@ -2,8 +2,7 @@
 
 /* Printerfejl ud fra errorIndex */
 void printError(int errorIndex) {
-    switch (errorIndex)
-    {
+    switch (errorIndex) {
     case 100:
         printf("Error 100: Can not allocated space\n");
         break;
