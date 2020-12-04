@@ -15,19 +15,17 @@ typedef struct {
     float capacity;
     float charge;
     char modelName[MODEL_NAME_LEN];
+    int numOfEV;
 }electricVehicle;
 
 enum modelType {tesla, huyndai, renault, vw};
 
 double sumOfbatCharged(electricVehicle evArray[], int evArrayLen);
 void generateEvArray(electricVehicle evArray[], int evArrayLen);
-void generateTeslaArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd);
-void generateHyundaiArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd);
-void generateRenaultArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd);
-void generateGolfArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd);
 int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge);
-void generateCustomArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd, enum modelType mType);
-electricVehicle makeEv(float capacity, float chargerate, float charge, char modelName[MODEL_NAME_LEN]);
+void setBatteryCharge(electricVehicle evArray[], int evArrayLen);
 void printEV(electricVehicle array[], int arrayLength);
 void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[]);
-void readFileEV(electricVehicle evArray[]);
+void readFileEV(electricVehicle array[], int arrayLen);
+int getSumOfEvs(electricVehicle array[], int arrayLen);
+void setEvArrayValues(electricVehicle arrayFile[], int arrayFileLen, electricVehicle evArray[], int evArrayLen);

@@ -36,42 +36,38 @@ double sumOfbatCharged(electricVehicle evArray[], int evArrayLen) {
     return sum;
 }
 
-void generateEvArray(electricVehicle evArray[], int evArrayLen) {
-    int evArrayStart = 0;
-    int evArrayEnd = evArrayLen*PCT_TESLA;
-    generateCustomArray(evArray, evArrayStart, evArrayEnd, tesla);
-    evArrayStart += evArrayLen*PCT_TESLA;
-    evArrayEnd += evArrayLen*PCT_HYUNDAI;
-    generateCustomArray(evArray, evArrayStart, evArrayEnd, huyndai);
-    evArrayStart += evArrayLen*PCT_HYUNDAI;
-    evArrayEnd += evArrayLen*PCT_RENAULT;
-    generateCustomArray(evArray, evArrayStart, evArrayEnd, renault);
-    evArrayStart += evArrayLen*PCT_RENAULT;
-    evArrayEnd = evArrayLen;
-    generateCustomArray(evArray, evArrayStart, evArrayEnd, vw);
-}
-
-void generateCustomArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd, enum modelType mType) {
-    float capacity[] = {65, 64, 52, 35.8};
-    float chargeRate[] = {11, 10.5, 11, 7.2};
-    char modelName[MODEL_TYPE_LEN][MODEL_NAME_LEN] = {"Tesla Model 3", "Huyndai Kona", "Renault Zoe", "VW e-Golf"};
-    float charge = 0;
-
-    int i;
-    for (i = evArrayStart; i < evArrayEnd; i++) {
-        charge = (float)rand()/(float)(RAND_MAX)*capacity[mType];
-        evArray[i] = makeEv(capacity[mType], chargeRate[mType], charge, modelName[mType]);
+void setEvArrayValues(electricVehicle arrayFile[], int arrayFileLen, electricVehicle evArray[], int evArrayLen) {
+    int i, j;
+    int newIndex = 0;
+    for (i = 0; i < arrayFileLen; i++) {
+        for(j = newIndex; j < arrayFile[i].numOfEV+newIndex; j++) {
+            strcpy(evArray[j].modelName, arrayFile[i].modelName);
+            evArray[j].capacity = arrayFile[i].capacity;
+            evArray[j].chargeRate = arrayFile[i].chargeRate;
+        }
+        newIndex = arrayFile[i].numOfEV+newIndex;
     }
 }
 
-electricVehicle makeEv(float capacity, float chargeRate, float charge, char modelName[MODEL_NAME_LEN]){
-    electricVehicle ev;
-    ev.capacity = capacity;
-    ev.chargeRate = chargeRate;
-    ev.charge = charge;
-    strcpy(ev.modelName, modelName);
-    
-    return ev;
+void generateEvArray(electricVehicle evArray[], int evArrayLen) {
+    setBatteryCharge(evArray, evArrayLen);
+}
+
+int getSumOfEvs(electricVehicle array[], int arrayLen) {
+    int i;
+    int count = 0;
+    for (i = 0; i < arrayLen; i++)
+    {
+        count += array[i].numOfEV; 
+    }
+    return count;
+}
+
+void setBatteryCharge(electricVehicle evArray[], int evArrayLen){
+    int i;
+    for (i = 0; i < evArrayLen; i++) {
+        evArray[i].charge = (float)rand()/(float)(RAND_MAX)*evArray[i].capacity;
+    }
 }
 
 int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge) {
@@ -98,8 +94,8 @@ void printEV(electricVehicle array[], int arrayLength) {
     printf("\n");
 }
 
-void readFileEV(electricVehicle evArray[]){
-    FILE *EVdata = fopen("EVdata.csv", "r"); 
+void readFileEV(electricVehicle array[], int arrayLen){
+    FILE *EVdata = fopen("EVdata2.csv", "r"); 
     char singleline[40];
     int i = 0;
     int numOfLineData = 0;
@@ -107,7 +103,15 @@ void readFileEV(electricVehicle evArray[]){
     if (EVdata != NULL){
         while (!feof(EVdata)){
             fgets(singleline, 40, EVdata);
-            numOfLineData = sscanf(singleline, "%[^;]; %f; %f ", evArray[i].modelName, &evArray[i].capacity, &evArray[i].chargeRate);
+
+            numOfLineData = sscanf(singleline, "%[^;]; %f; %f; %d", array[i].modelName, &array[i].capacity, &array[i].chargeRate, &array[i].numOfEV);
+
+            //printf("%s %.1f %f %d \n", array[i].modelName, array[i].capacity, array[i].chargeRate, array[i].numOfEV); //den her skal slettes senere :) 
+            
+            if (numOfLineData != 4) {
+                printError(201);
+            }
+        i++;
         }
     }
 }

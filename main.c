@@ -30,17 +30,22 @@ int main (void) {
   
     qsort(elPrArray, newArrayLen, sizeof(spotPrices), comparespotPrices);
     //printspotPricesArray(elPrArray, newArrayLen);
-    int evArrayLen = 500000;
+
+    electricVehicle* fileEvArray = (electricVehicle*)malloc(100*sizeof(electricVehicle)); 
+    readFileEV(fileEvArray, 100);
+
+    int evArrayLen = getSumOfEvs(fileEvArray, 100);
+
     electricVehicle* evArray = (electricVehicle*)malloc(evArrayLen*sizeof(electricVehicle)); 
     if (evArray == NULL) {
         printError(100);
     }
+    setEvArrayValues(fileEvArray, 100, evArray, evArrayLen);
     generateEvArray(evArray, evArrayLen);
-
-    printf("EvArray:\n");
-    //printEV(evArray, evArrayLen);
+    free(fileEvArray);
+    //printf("EvArray:\n");
+    printEV(evArray, evArrayLen);
     chargeEV(evArray, evArrayLen, elPrArray);
-
     free(elPrArray);
 
     return 0;
