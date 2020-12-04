@@ -16,37 +16,18 @@ int main (void) {
     srand(10);
 
     askForNewData();
-
     spotPrices* elPrArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices)); 
     if (elPrArray == NULL) {
         printError(100);
     }
-
     printf("Reading file: \n");
     if (readFile(elPrArray, SPOT_PRICES_LEN)) {
         printError(404);
     }
     newArrayLen = getArrayIndexForPricesNow(elPrArray, SPOT_PRICES_LEN);
-  
     qsort(elPrArray, newArrayLen, sizeof(spotPrices), comparespotPrices);
+    printAndchargeEV(elPrArray);
     //printspotPricesArray(elPrArray, newArrayLen);
-
-    electricVehicle* fileEvArray = (electricVehicle*)malloc(100*sizeof(electricVehicle)); 
-    readFileEV(fileEvArray, 100);
-
-    int evArrayLen = getSumOfEvs(fileEvArray, 100);
-
-    electricVehicle* evArray = (electricVehicle*)malloc(evArrayLen*sizeof(electricVehicle)); 
-    if (evArray == NULL) {
-        printError(100);
-    }
-    setEvArrayValues(fileEvArray, 100, evArray, evArrayLen);
-    generateEvArray(evArray, evArrayLen);
-    free(fileEvArray);
-    //printf("EvArray:\n");
-    printEV(evArray, evArrayLen);
-    chargeEV(evArray, evArrayLen, elPrArray);
-    free(elPrArray);
 
     return 0;
 }

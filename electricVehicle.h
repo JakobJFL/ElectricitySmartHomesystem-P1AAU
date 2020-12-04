@@ -5,10 +5,8 @@
 
 #define MODEL_NAME_LEN 25
 #define MODEL_TYPE_LEN 4
+#define FILE_MAX_LINE 100
 
-#define PCT_TESLA 0.556
-#define PCT_HYUNDAI 0.114
-#define PCT_RENAULT 0.082
 
 typedef struct {
     float chargeRate;
@@ -21,7 +19,7 @@ typedef struct {
 enum modelType {tesla, huyndai, renault, vw};
 
 double sumOfbatCharged(electricVehicle evArray[], int evArrayLen);
-void generateEvArray(electricVehicle evArray[], int evArrayLen);
+void printAndchargeEV(spotPrices elPrArray[]);
 int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge);
 void setBatteryCharge(electricVehicle evArray[], int evArrayLen);
 void printEV(electricVehicle array[], int arrayLength);
