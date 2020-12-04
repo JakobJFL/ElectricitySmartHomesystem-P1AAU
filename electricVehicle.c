@@ -1,21 +1,21 @@
-/* ElectricVehicle.c*/
 #include "spotPrices.h"
 #include "electricVehicle.h"
 #include "allErrorFile.h"
 
 void printAndchargeEV(spotPrices elPrArray[]) {
-    electricVehicle* fileEvArray = (electricVehicle*)malloc(FILE_MAX_LINE*sizeof(electricVehicle)); 
+    static electricVehicle fileEvArray[FILE_MAX_LINE];
+    if (fileEvArray == NULL) {
+        printError(100);
+    }
     readFileEV(fileEvArray, FILE_MAX_LINE);
 
     int evArrayLen = getSumOfEvs(fileEvArray, FILE_MAX_LINE);
 
     electricVehicle* evArray = (electricVehicle*)malloc(evArrayLen*sizeof(electricVehicle)); 
-    
     if (evArray == NULL) {
         printError(100);
     }
     setEvArrayValues(fileEvArray, FILE_MAX_LINE, evArray, evArrayLen);
-    free(fileEvArray);
     setBatteryCharge(evArray, evArrayLen);
     //printEV(evArray, evArrayLen);
     chargeEV(evArray, evArrayLen, elPrArray);
@@ -24,13 +24,13 @@ void printAndchargeEV(spotPrices elPrArray[]) {
 
 void readFileEV(electricVehicle array[], int arrayLen){
     FILE *EVdata = fopen("EVdata2.csv", "r"); 
-    char singleline[40];
+    char singleline[FILE_LINE_LENGTH];
     int i = 0;
     int numOfLineData = 0;
 
     if (EVdata != NULL){
         while (!feof(EVdata)){
-            fgets(singleline, 40, EVdata);
+            fgets(singleline, FILE_LINE_LENGTH, EVdata);
 
             numOfLineData = sscanf(singleline, "%[^;]; %f; %f; %d", array[i].modelName, &array[i].capacity, &array[i].chargeRate, &array[i].numOfEV);
 

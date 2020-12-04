@@ -6,7 +6,7 @@
 #define MODEL_NAME_LEN 25
 #define MODEL_TYPE_LEN 4
 #define FILE_MAX_LINE 100
-
+#define FILE_LINE_LENGTH 40
 
 typedef struct {
     float chargeRate;
