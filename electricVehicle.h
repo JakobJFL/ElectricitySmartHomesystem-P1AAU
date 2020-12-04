@@ -19,9 +19,15 @@ typedef struct {
 enum modelType {tesla, huyndai, renault, vw};
 
 double sumOfbatCharged(electricVehicle evArray[], int evArrayLen);
-void printAndchargeEV(spotPrices elPrArray[]);
+
+void generateEvArray(electricVehicle evArray[], int evArrayLen);
+void generateTeslaArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd);
+void generateHyundaiArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd);
+void generateRenaultArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd);
+void generateGolfArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd);
 int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge, float* evCharge);
-void setBatteryCharge(electricVehicle evArray[], int evArrayLen);
+void generateCustomArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd, enum modelType mType);
+electricVehicle makeEv(float capacity, float chargerate, float charge, char modelName[MODEL_NAME_LEN]);
 void printEV(electricVehicle array[], int arrayLength);
 void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[]);
 void readFileEV(electricVehicle array[], int arrayLen);

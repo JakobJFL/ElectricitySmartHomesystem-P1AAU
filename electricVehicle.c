@@ -125,6 +125,7 @@ int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge, f
             if (evArray[i].charge > evArray[i].capacity) {
                 evArray[i].charge = evArray[i].capacity;
             }
+            *evCharge += evArray[i].chargeRate;
             numOfEvCharged++;
         }
     }
