@@ -25,7 +25,7 @@ void generateTeslaArray(electricVehicle evArray[], int evArrayStart, int evArray
 void generateHyundaiArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd);
 void generateRenaultArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd);
 void generateGolfArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd);
-int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge);
+int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge, float* evCharge);
 void generateCustomArray(electricVehicle evArray[], int evArrayStart, int evArrayEnd, enum modelType mType);
 electricVehicle makeEv(float capacity, float chargerate, float charge, char modelName[MODEL_NAME_LEN]);
 void printEV(electricVehicle array[], int arrayLength);
