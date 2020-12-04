@@ -7,6 +7,7 @@
 #include "allErrorFile.h"
 
 #define DATE_MAX_LENGTH 15
+#define LINE_LENGTH 25
 
 void askForNewData(void);
 int readFile(spotPrices elPrArray[], int elPrArraylen);
@@ -16,32 +17,19 @@ int main (void) {
     srand(10);
 
     askForNewData();
-
     spotPrices* elPrArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices)); 
     if (elPrArray == NULL) {
         printError(100);
-    }
 
+    }
     printf("Reading file: \n");
     if (readFile(elPrArray, SPOT_PRICES_LEN)) {
         printError(404);
     }
     newArrayLen = getArrayIndexForPricesNow(elPrArray, SPOT_PRICES_LEN);
-  
     qsort(elPrArray, newArrayLen, sizeof(spotPrices), comparespotPrices);
+    printAndchargeEV(elPrArray);
     //printspotPricesArray(elPrArray, newArrayLen);
-    int evArrayLen = 500000;
-    electricVehicle* evArray = (electricVehicle*)malloc(evArrayLen*sizeof(electricVehicle)); 
-    if (evArray == NULL) {
-        printError(100);
-    }
-    generateEvArray(evArray, evArrayLen);
-
-    printf("EvArray:\n");
-    //printEV(evArray, evArrayLen);
-    chargeEV(evArray, evArrayLen, elPrArray);
-
-    free(elPrArray);
 
     return 0;
 }
@@ -59,15 +47,15 @@ int readFile(spotPrices elPrArray[], int elPrArrayLen) {
     FILE *fpointer;
     float price = 0;
     char date[DATE_MAX_CHARS];
-    char singleline[25];
+    char singleline[LINE_LENGTH];
     int i = 0;
     int numOfLineData = 0;
 
     fpointer = fopen("output.csv", "r"); /* For at fortælle at vi vil gerne læse fra den fil, vi bruger derfor "r" */
     if (fpointer != NULL) {
         while (!feof(fpointer)){
-            fgets(singleline, 25, fpointer); /* For at læse den linje pr. linje */
-            numOfLineData = sscanf(singleline, "%[^;];%f", &date, &price);
+            fgets(singleline, LINE_LENGTH, fpointer); /* For at læse den linje pr. linje */
+            numOfLineData = sscanf(singleline, "%[^;];%f", date, &price);
             elPrArray[i] = makeElspotPrice(date, price);
             
             if (numOfLineData != 2) {
