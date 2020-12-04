@@ -88,17 +88,17 @@ void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[])
 
     int numOfEvCharged = 1;
     int hourCount = 0;
-    int evToChargeThreshold = evArrayLen/3;
+    int evToChargeThreshold = evArrayLen/2;
     float batCharged = 0;
     float preBatCharged = 0;
 
     //printEV(evArray, evArrayLen);
     while (numOfEvCharged > 0) {
         hourCount++;
-        numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, evToChargeThreshold*hourCount);
-        evToChargeThreshold *= 0.8;
+        float evCharge = 0;
+        numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, evArrayLen/2, &evCharge);
         batCharged = sumOfbatCharged(evArray, evArrayLen)-preBatCharged;
-        printf("%d | Time: %s | batCharged: %.3f MWh | eVCharging %d | Pris: %.2f\n", hourCount, elPrArray[hourCount-1].date, batCharged/1000, numOfEvCharged, elPrArray[hourCount-1].price);
+        printf("%d | Time: %s | batCharged: %.3f MWh | eVCharging %d | Pris: %.2f\n", hourCount, elPrArray[hourCount-1].date, evCharge/1000, numOfEvCharged, elPrArray[hourCount-1].price);
         preBatCharged = sumOfbatCharged(evArray, evArrayLen);
     }
     printf("After EvArray:\n");
@@ -116,11 +116,11 @@ double sumOfbatCharged(electricVehicle evArray[], int evArrayLen) {
     return sum;
 }
 
-int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge) {
+int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge, float* evCharge) {
     int i;
     int numOfEvCharged = 0;
     for(i = 0; i < evArrayLen; i++) {
-        if (evArray[i].charge < evArray[i].capacity && i <= evToCharge) {
+        if (evArray[i].charge < evArray[i].capacity && numOfEvCharged < evToCharge) {
             evArray[i].charge += evArray[i].chargeRate;
             if (evArray[i].charge > evArray[i].capacity) {
                 evArray[i].charge = evArray[i].capacity;

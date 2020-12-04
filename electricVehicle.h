@@ -20,7 +20,7 @@ enum modelType {tesla, huyndai, renault, vw};
 
 double sumOfbatCharged(electricVehicle evArray[], int evArrayLen);
 void printAndchargeEV(spotPrices elPrArray[]);
-int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge);
+int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge, float* evCharge);
 void setBatteryCharge(electricVehicle evArray[], int evArrayLen);
 void printEV(electricVehicle array[], int arrayLength);
 void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[]);
