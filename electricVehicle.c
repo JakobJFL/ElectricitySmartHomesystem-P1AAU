@@ -72,12 +72,11 @@ void setBatteryCharge(electricVehicle evArray[], int evArrayLen){
     int i;
     int minKm = 20;
     int maxKm = 70;
+
     for (i = 0; i < evArrayLen; i++) {
-        float km = (rand() % (maxKm - minKm + 1)) + minKm;
-        evArray[i].charge = evArray[i].capacity - (km/evArray[i].kmPrKwh);
-        //(float)rand()/(float)(RAND_MAX)*evArray[i].capacity;
-        printf("charge: %f, km: %d", evArray[i].charge, km);
-       
+        float km = (rand() % (maxKm - minKm + 1)) + minKm; /* Giver et gennemsnit på 46 km kørt pr. dag */
+        evArray[i].charge = evArray[i].capacity - (km/evArray[i].kmPrKwh); 
+        /*evArray[i].charge = (float)rand()/(float)(RAND_MAX)*evArray[i].capacity; helt tilfældig batteri niveau*/
     }
 }
 
