@@ -14,22 +14,20 @@ int readFile(spotPrices elPrArray[], int elPrArraylen);
 
 int main (void) {
     int newArrayLen = 0;
-    srand(10);
-
-    askForNewData();
     spotPrices* elPrArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices)); 
-    if (elPrArray == NULL) {
+    if (elPrArray == NULL)
         printError(100);
 
-    }
+    srand(10);
+    askForNewData();
     printf("Reading file: \n");
-    if (readFile(elPrArray, SPOT_PRICES_LEN)) {
+    if (readFile(elPrArray, SPOT_PRICES_LEN)) 
         printError(404);
-    }
+
     newArrayLen = getArrayIndexForPricesNow(elPrArray, SPOT_PRICES_LEN);
     qsort(elPrArray, newArrayLen, sizeof(spotPrices), comparespotPrices);
     printAndchargeEV(elPrArray);
-    //printspotPricesArray(elPrArray, newArrayLen);
+    /*printspotPricesArray(elPrArray, newArrayLen); */
 
     return 0;
 }
@@ -38,9 +36,8 @@ void askForNewData(void) {
     char yn;
     printf("Do you want to get data? Type \"y\" for yes and \"n\" for no: ");
     scanf(" %c", &yn);
-    if (yn == 'y') {
+    if (yn == 'y') 
         system("APIGetElspotPrices\\ElspotPrices.exe");
-    }
 }
 
 int readFile(spotPrices elPrArray[], int elPrArrayLen) {
@@ -58,9 +55,8 @@ int readFile(spotPrices elPrArray[], int elPrArrayLen) {
             numOfLineData = sscanf(singleline, "%[^;];%f", date, &price);
             elPrArray[i] = makeElspotPrice(date, price);
             
-            if (numOfLineData != 2) {
+            if (numOfLineData != 2)
                 printError(201);
-            }
             i++;
         }
     }

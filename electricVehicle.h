@@ -14,6 +14,7 @@ typedef struct {
     float charge;
     char modelName[MODEL_NAME_LEN];
     int numOfEV;
+    float kmPrKwh;
 }electricVehicle;
 
 enum modelType {tesla, huyndai, renault, vw};
@@ -25,5 +26,4 @@ void setEvArrayValues(electricVehicle arrayFile[], int arrayFileLen, electricVeh
 void setBatteryCharge(electricVehicle evArray[], int evArrayLen);
 void printEV(electricVehicle array[], int arrayLength);
 void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[]);
-double sumOfbatCharged(electricVehicle evArray[], int evArrayLen);
 int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge, double* evCharge);
