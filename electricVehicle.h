@@ -14,6 +14,7 @@ typedef struct {
     float charge;
     char modelName[MODEL_NAME_LEN];
     int numOfEV;
+    float kmPrKwh;
 }electricVehicle;
 
 enum modelType {tesla, huyndai, renault, vw};
