@@ -4,13 +4,10 @@
 #include <string.h>
 #include "spotPrices.h"
 #include "electricVehicle.h"
-#include "allErrorFile.h"
-
-#define DATE_MAX_LENGTH 15
-#define LINE_LENGTH 25
+#include "allError.h"
+#include "files.h"
 
 void askForNewData(void);
-int readFile(spotPrices elPrArray[], int elPrArraylen);
 
 int main (void) {
     int newArrayLen = 0;
@@ -22,10 +19,10 @@ int main (void) {
     askForNewData();
     printf("Reading file: \n");
     if (readFile(elPrArray, SPOT_PRICES_LEN)) 
-        printError(404);
+        printError(402);
 
     newArrayLen = getArrayIndexForPricesNow(elPrArray, SPOT_PRICES_LEN);
-    qsort(elPrArray, newArrayLen, sizeof(spotPrices), comparespotPrices);
+    qsort(elPrArray, newArrayLen, sizeof(spotPrices), compareSpotPrices);
     printAndchargeEV(elPrArray);
     /*printspotPricesArray(elPrArray, newArrayLen); */
 
@@ -38,30 +35,4 @@ void askForNewData(void) {
     scanf(" %c", &yn);
     if (yn == 'y') 
         system("APIGetElspotPrices\\ElspotPrices.exe");
-}
-
-int readFile(spotPrices elPrArray[], int elPrArrayLen) {
-    FILE *fpointer;
-    float price = 0;
-    char date[DATE_MAX_CHARS];
-    char singleline[LINE_LENGTH];
-    int i = 0;
-    int numOfLineData = 0;
-
-    fpointer = fopen("output.csv", "r"); /* For at fortælle at vi vil gerne læse fra den fil, vi bruger derfor "r" */
-    if (fpointer != NULL) {
-        while (!feof(fpointer)){
-            fgets(singleline, LINE_LENGTH, fpointer); /* For at læse den linje pr. linje */
-            numOfLineData = sscanf(singleline, "%[^;];%f", date, &price);
-            elPrArray[i] = makeElspotPrice(date, price);
-            
-            if (numOfLineData != 2)
-                printError(201);
-            i++;
-        }
-    }
-    else 
-        return 1;
-    
-    return fclose(fpointer);
 }

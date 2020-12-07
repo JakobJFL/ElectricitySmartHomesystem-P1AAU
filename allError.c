@@ -1,4 +1,4 @@
-#include "allErrorFile.h"
+#include "allError.h"
 
 /* Printerfejl ud fra errorIndex */
 void printError(int errorIndex) {
@@ -14,6 +14,9 @@ void printError(int errorIndex) {
         break;
     case 404:
         printf("Error 404: File not found.\n");
+        break;
+    case 402:
+        printf("Error 402: File could not be closed\n");
         break;
     default:
         printf("An unknown error occurred\n");
