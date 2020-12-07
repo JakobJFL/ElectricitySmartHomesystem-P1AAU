@@ -1,16 +1,19 @@
 CFLAGS = -Wall -ansi -pedantic
 
-run.exe: electricVehicle.o spotPrices.o allErrorFile.o main.c
-	gcc $(CFLAGS) electricVehicle.o spotPrices.o allErrorFile.o main.c -o run.exe
+run.exe: electricVehicle.o spotPrices.o files.o allError.o main.c
+	gcc electricVehicle.o spotPrices.o files.o allError.o main.c -o run.exe
 
-electricVehicle.o: electricVehicle.c electricVehicle.h spotPrices.h
-	gcc $(CFLAGS) -c electricVehicle.c
+electricVehicle.o: electricVehicle.c files.h electricVehicle.h spotPrices.h
+	gcc -c electricVehicle.c
 
-spotPrices.o: spotPrices.c spotPrices.h
-	gcc $(CFLAGS) -c spotPrices.c
+spotPrices.o: spotPrices.c files.h spotPrices.h
+	gcc -c spotPrices.c
 
-allErrorFile.o: allErrorFile.c allErrorFile.h
-	gcc $(CFLAGS) -c allErrorFile.c
+files.o: files.c files.h
+	gcc -c files.c
+
+allError.o: allError.c allError.h
+	gcc -c allError.c
 
 clean:
 	$(RM) *.o run.exe *~

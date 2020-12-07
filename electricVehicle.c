@@ -1,6 +1,7 @@
 #include "spotPrices.h"
 #include "electricVehicle.h"
-#include "allErrorFile.h"
+#include "allError.h"
+#include "files.h"
 
 void printAndchargeEV(spotPrices elPrArray[]) {
     static electricVehicle fileEvArray[FILE_MAX_LINE];
@@ -9,7 +10,8 @@ void printAndchargeEV(spotPrices elPrArray[]) {
     if (fileEvArray == NULL)
         printError(100);
 
-    readFileEV(fileEvArray, FILE_MAX_LINE);
+    if (readFileEV(fileEvArray, FILE_MAX_LINE)) 
+        printError(402);
     evArrayLen = getSumOfEvs(fileEvArray, FILE_MAX_LINE);
 
     evArray = (electricVehicle*)malloc(evArrayLen*sizeof(electricVehicle));
@@ -21,30 +23,6 @@ void printAndchargeEV(spotPrices elPrArray[]) {
     /* printEV(evArray, evArrayLen); */
     chargeEV(evArray, evArrayLen, elPrArray);
     free(elPrArray);
-}
-
-void readFileEV(electricVehicle array[], int arrayLen){
-    FILE *EVdata = fopen("EVdata.csv", "r"); 
-    char singleline[FILE_LINE_LENGTH];
-    int i = 0;
-    int numOfLineData = 0;
-
-    if (EVdata != NULL){
-        while (!feof(EVdata)){
-            fgets(singleline, FILE_LINE_LENGTH, EVdata);
-
-            numOfLineData = sscanf(singleline, "%[^;]; %f; %f; %d; %f", 
-            array[i].modelName, 
-            &array[i].capacity, 
-            &array[i].chargeRate, 
-            &array[i].numOfEV, 
-            &array[i].kmPrKwh);
-            
-            if (numOfLineData != 5)
-                printError(201);
-        i++;
-        }
-    }
 }
 
 int getSumOfEvs(electricVehicle array[], int arrayLen) {
@@ -72,8 +50,8 @@ void setEvArrayValues(electricVehicle arrayFile[], int arrayFileLen, electricVeh
 
 void setBatteryCharge(electricVehicle evArray[], int evArrayLen){
     int i;
-    int minKm = 20;
-    int maxKm = 70;
+    int minKm = getOption(minDistance);
+    int maxKm = getOption(maxDistance);
 
     for (i = 0; i < evArrayLen; i++) {
         float km = (rand() % (maxKm - minKm + 1)) + minKm; /* Giver et gennemsnit på 46 km kørt pr. dag */
@@ -82,7 +60,7 @@ void setBatteryCharge(electricVehicle evArray[], int evArrayLen){
     }
 }
 
-void printEV(electricVehicle array[], int arrayLength) {
+void printEV(electricVehicle array[], int arrayLength) { /* kan slettes når programmet er færdigt */
     int i;
     for(i = 0; i < arrayLength; i++) {
         printf(" %.2f kWh/%f kWh, ", array[i].charge, array[i].capacity);
@@ -96,10 +74,12 @@ void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[])
     int hourCount = 0;
     double evCharge = 0;
     double sumEvCharge = 0;
+    int divideCh = getOption(divideCharging);
+    int divideCharging = getOption(maxLoad);
 
     while (numOfEvCharged > 0) {
         evCharge = 0;
-        numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, evArrayLen/2, &evCharge);
+        numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, evArrayLen/divideCh, getOption(maxLoad), &evCharge);
         sumEvCharge += evCharge;
         if (numOfEvCharged > 0) {
             hourCount++;
@@ -114,12 +94,12 @@ void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[])
     printf("Batteri opladet i alt: %.3f MWh", sumEvCharge/1000);
 }
 
-int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge, double* evCharge) {
+int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge, double maxLoad, double* evCharge) {
     int i;
     int numOfEvCharged = 0;
     double preEvCharge = 0;
     for(i = 0; i < evArrayLen; i++) {
-        if (evArray[i].charge < evArray[i].capacity && numOfEvCharged < evToCharge) {
+        if (evArray[i].charge < evArray[i].capacity && numOfEvCharged < evToCharge && *evCharge < maxLoad) {
             preEvCharge = evArray[i].charge;
             evArray[i].charge += evArray[i].chargeRate;
             if (evArray[i].charge > evArray[i].capacity) 
