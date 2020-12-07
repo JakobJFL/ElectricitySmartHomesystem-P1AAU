@@ -26,5 +26,4 @@ void setEvArrayValues(electricVehicle arrayFile[], int arrayFileLen, electricVeh
 void setBatteryCharge(electricVehicle evArray[], int evArrayLen);
 void printEV(electricVehicle array[], int arrayLength);
 void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[]);
-double sumOfbatCharged(electricVehicle evArray[], int evArrayLen);
-int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge, float* evCharge);
+int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge, double* evCharge);
