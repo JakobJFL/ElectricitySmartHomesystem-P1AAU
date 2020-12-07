@@ -32,11 +32,11 @@ void readFileEV(electricVehicle array[], int arrayLen){
         while (!feof(EVdata)){
             fgets(singleline, FILE_LINE_LENGTH, EVdata);
 
-            numOfLineData = sscanf(singleline, "%[^;]; %f; %f; %d", array[i].modelName, &array[i].capacity, &array[i].chargeRate, &array[i].numOfEV);
+            numOfLineData = sscanf(singleline, "%[^;]; %f; %f; %d; %f", array[i].modelName, &array[i].capacity, &array[i].chargeRate, &array[i].numOfEV, &array[i].kmPrKwh);
 
             //printf("%s %.1f %f %d \n", array[i].modelName, array[i].capacity, array[i].chargeRate, array[i].numOfEV); //den her skal slettes senere :) 
             
-            if (numOfLineData != 4) {
+            if (numOfLineData != 5) {
                 printError(201);
             }
         i++;
@@ -62,6 +62,7 @@ void setEvArrayValues(electricVehicle arrayFile[], int arrayFileLen, electricVeh
             strcpy(evArray[j].modelName, arrayFile[i].modelName);
             evArray[j].capacity = arrayFile[i].capacity;
             evArray[j].chargeRate = arrayFile[i].chargeRate;
+            evArray[j].kmPrKwh = arrayFile[i].kmPrKwh;
         }
         newIndex = arrayFile[i].numOfEV+newIndex;
     }
@@ -69,15 +70,13 @@ void setEvArrayValues(electricVehicle arrayFile[], int arrayFileLen, electricVeh
 
 void setBatteryCharge(electricVehicle evArray[], int evArrayLen){
     int i;
+    int minKm = 20;
+    int maxKm = 70;
+
     for (i = 0; i < evArrayLen; i++) {
-<<<<<<< Updated upstream
-        evArray[i].charge = (float)rand()/(float)(RAND_MAX)*evArray[i].capacity;
-=======
         float km = (rand() % (maxKm - minKm + 1)) + minKm; /* Giver et gennemsnit på 46 km kørt pr. dag */
         evArray[i].charge = evArray[i].capacity - (km/evArray[i].kmPrKwh); 
-        //evArray[i].charge = 0;
         /*evArray[i].charge = (float)rand()/(float)(RAND_MAX)*evArray[i].capacity; helt tilfældig batteri niveau*/
->>>>>>> Stashed changes
     }
 }
 
