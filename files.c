@@ -1,6 +1,7 @@
 #include "spotPrices.h"
 #include "electricVehicle.h"
 #include "files.h"
+#include "allError.h"
 
 int readFile(spotPrices elPrArray[], int elPrArrayLen) {
     FILE *fpointer;
@@ -30,8 +31,12 @@ int readFile(spotPrices elPrArray[], int elPrArrayLen) {
 
 int getOption(enum options option) {
     static enum options optionsArray[OPTIONS_LENGTH];
-    if(readOptionsFile(optionsArray)) 
-        printError(402);
+    static int isFileRead;
+    if (!isFileRead) {
+        if(readOptionsFile(optionsArray)) 
+            printError(402);
+        isFileRead = 1;
+    }    
     return optionsArray[option];
 }
 
