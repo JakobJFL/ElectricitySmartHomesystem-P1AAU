@@ -79,7 +79,7 @@ void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[])
 
     while (numOfEvCharged > 0) {
         evCharge = 0;
-        numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, evArrayLen/divideCh, getOption(maxLoad), &evCharge);
+        numOfEvCharged = chargeEvOneHour(evArray, evArrayLen, evArrayLen/divideCh, divideCharging, &evCharge);
         sumEvCharge += evCharge;
         if (numOfEvCharged > 0) {
             hourCount++;
