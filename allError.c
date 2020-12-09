@@ -16,10 +16,10 @@ void printError(int errorIndex) {
         printf("Error 404: File not found.\n");
         break;
     case 402:
-        printf("Error 402: File could not be closed\n");
+        printf("Error 402: File could not be closed.\n");
         break;
     default:
-        printf("An unknown error occurred\n");
+        printf("An unknown error occurred.\n");
         break;
     }
     exit(0);
