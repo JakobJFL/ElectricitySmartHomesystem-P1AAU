@@ -15,7 +15,7 @@ int main (void) {
     if (elPrArray == NULL)
         printError(100);
 
-    srand(10);
+    srand(time(NULL));
     askForNewData();
     printf("Reading file: \n");
     if (readSpotPricesFile(elPrArray, SPOT_PRICES_LEN)) 
@@ -24,6 +24,7 @@ int main (void) {
     newArrayLen = getArrayIndexForPricesNow(elPrArray, SPOT_PRICES_LEN);
     qsort(elPrArray, newArrayLen, sizeof(spotPrices), compareSpotPrices);
     chargeEV(elPrArray);
+    free(elPrArray);
 
     return 0;
 }
