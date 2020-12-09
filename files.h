@@ -7,5 +7,5 @@ enum options {maxLoad, divideCharging, minDistance, maxDistance};
 
 int readOptionsFile(enum options optionsArray[]);
 int readFileEV(electricVehicle array[], int arrayLen);
-int readFile(spotPrices elPrArray[], int elPrArraylen);
+int readSpotPricesFile(spotPrices elPrArray[], int elPrArraylen);
 int getOption(enum options option);
