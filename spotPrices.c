@@ -2,6 +2,7 @@
 #include "spotPrices.h"
 #include "allError.h"
 
+/*Funktionen makeElspotPrice lægger data fra fil over i et struct, kaldet spotPrices. Funktionen kaldes i readFile*/
 spotPrices makeElspotPrice(char date[DATE_MAX], float price) {
     spotPrices spotPr;
     strcpy(spotPr.date, date);
@@ -9,6 +10,7 @@ spotPrices makeElspotPrice(char date[DATE_MAX], float price) {
     return spotPr;
 }
 
+/*Funktionen compareSpotPrices sammenligner elpriser, der anvendes af qsort-funktionen*/
 int compareSpotPrices(const void *p1, const void *p2) {
     const spotPrices *elem1 = p1;    
     const spotPrices *elem2 = p2;
@@ -21,26 +23,18 @@ int compareSpotPrices(const void *p1, const void *p2) {
             return 0; 
 }
 
-void printspotPricesArray(spotPrices array[], int arrayLength) {
-    int i;
-    for(i = 0; i < arrayLength; i++) {
-        printf("%s, ", array[i].date);
-        printf("%.2f\n", array[i].price);
-    }
-}
-
 int getArrayIndexForPricesNow(spotPrices array[], int arrayLen) {
     int i;
     time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
+    struct tm tm = *localtime(&t); /*Der laves et struct over nuværende år, dag og time*/
     char timeDate[DATE_MAX];
     
     sprintf(timeDate, "%d-%02d-%02d %02d", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour);
     for (i = 0; i < arrayLen; i++) {
-        if (strcmp(array[i].date, timeDate) == 0) {
+        if (strcmp(array[i].date, timeDate) == 0) { /*Tjekker om der er ens dato og tid, med den hentede data fra C#-programmet*/
             return i+1;
         }
     }
-    printError(202);
+    printError(202); /*Printer fejlkode hvis der ikke findes nogen ens dato og tid*/
     return 0; 
 }

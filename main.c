@@ -11,28 +11,28 @@ void askForNewData(void);
 
 int main (void) {
     int newArrayLen = 0;
-    spotPrices* elPrArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices)); 
+    spotPrices* elPrArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices));
     if (elPrArray == NULL)
         printError(100);
 
     srand(10);
     askForNewData();
     printf("Reading file: \n");
-    if (readFile(elPrArray, SPOT_PRICES_LEN)) 
+    if (readSpotPricesFile(elPrArray, SPOT_PRICES_LEN)) 
         printError(402);
 
     newArrayLen = getArrayIndexForPricesNow(elPrArray, SPOT_PRICES_LEN);
     qsort(elPrArray, newArrayLen, sizeof(spotPrices), compareSpotPrices);
-    printAndchargeEV(elPrArray);
-    /*printspotPricesArray(elPrArray, newArrayLen); */
+    chargeEV(elPrArray);
 
     return 0;
 }
 
+/*Funktionen askForNewData spørger brugeren, om der skal hentes ny data og henter data, hvis det ønskes*/
 void askForNewData(void) {
     char yn;
-    printf("Do you want to get data? Type \"y\" for yes and \"n\" for no: ");
+    printf("Do you want to get new data? Type \"y\" for yes and \"n\" for no: ");
     scanf(" %c", &yn);
     if (yn == 'y') 
-        system("APIGetElspotPrices\\ElspotPrices.exe");
+        system("APIGetElspotPrices\\ElspotPrices.exe");/*Kører C#-program, der henter data fra API*/
 }

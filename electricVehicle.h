@@ -17,10 +17,10 @@ typedef struct {
     float kmPrKwh;
 }electricVehicle;
 
-void printAndchargeEV(spotPrices elPrArray[]);
+void chargeEV(spotPrices elPrArray[]);
 int getSumOfEvs(electricVehicle array[], int arrayLen);
 void setEvArrayValues(electricVehicle arrayFile[], int arrayFileLen, electricVehicle evArray[], int evArrayLen);
 void setBatteryCharge(electricVehicle evArray[], int evArrayLen);
 void printEV(electricVehicle array[], int arrayLength);
-void chargeEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[]);
+void chargeAndPrintEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[]);
 int chargeEvOneHour(electricVehicle evArray[], int evArrayLen, int evToCharge, double maxLoad, double* evCharge);
