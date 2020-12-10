@@ -9,8 +9,6 @@ void chargeEV(spotPrices elPrArray[]) {
     static electricVehicle fileEvArray[FILE_MAX_LINE];
     electricVehicle* evArray; 
     int evArrayLen;
-    if (fileEvArray == NULL)
-        printError(100);
 
     if (readFileEV(fileEvArray, FILE_MAX_LINE)) 
         printError(402);
@@ -74,7 +72,7 @@ void chargeAndPrintEV(electricVehicle evArray[], int evArrayLen, spotPrices elPr
 
     /* Kører så længe at "chargeEvOneHour" ikke returnerer 0 altså at 0 elbiler blev opladet i den time 
     fordi der ikke er flere der skal oplades. */
-    while (numOfEvCharging > 0) { 
+    while (numOfEvCharging != 0) { 
         evCharge = 0;
         numOfEvCharging = chargeEvOneHour(evArray, evArrayLen, evArrayLen/divideCh, divideCharging, &evCharge);
         sumEvCharge += evCharge;
