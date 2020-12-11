@@ -16,8 +16,7 @@ int readSpotPricesFile(spotPrices elPrArray[], int elPrArrayLen) {
     if (fpointer != NULL) {
         while (!feof(fpointer)){
             fgets(singleline, FILE_LINE_LENGTH, fpointer); /*Der læses én linje ad gangen*/
-            numOfLineData = sscanf(singleline, "%[^;];%f", date, &price);
-            elPrArray[i] = makeElspotPrice(date, price);
+            numOfLineData = sscanf(singleline, "%[^;];%f", elPrArray[i].date, &elPrArray[i].price);
             
             if (numOfLineData != 2)
                 printError(201);

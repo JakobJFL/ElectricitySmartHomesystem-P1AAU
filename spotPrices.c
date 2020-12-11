@@ -3,12 +3,7 @@
 #include "allError.h"
 
 /*Funktionen makeElspotPrice lægger data fra fil over i et struct, kaldet spotPrices. Funktionen kaldes i readFile*/
-spotPrices makeElspotPrice(char date[DATE_MAX], float price) {
-    spotPrices spotPr;
-    strcpy(spotPr.date, date);
-    spotPr.price = price;
-    return spotPr;
-}
+
 
 /*Funktionen compareSpotPrices sammenligner elpriser, der anvendes af qsort-funktionen*/
 int compareSpotPrices(const void *p1, const void *p2) {
