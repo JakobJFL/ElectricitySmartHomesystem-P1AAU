@@ -17,7 +17,7 @@ int readSpotPricesFile(spotPrices elPrArray[], int elPrArrayLen) {
             numOfLineData = sscanf(singleline, "%[^;];%f", elPrArray[i].date, &elPrArray[i].price);
             
             if (numOfLineData != 2)
-                printError(201);
+                printError(401);
             i++;
         }
     }
@@ -34,7 +34,7 @@ int getOption(enum options option) {
     static int isFileRead;
     if (!isFileRead) {
         if(readOptionsFile(optionsArray)) 
-            printError(402);
+            printError(409);
         isFileRead = 1;
     }    
     return optionsArray[option];
@@ -58,8 +58,12 @@ int readFileEV(electricVehicle array[], int arrayLen){
                 &array[i].numOfEV, 
                 &array[i].kmPrKwh);
             
+            if (array[i].capacity <= 0 || array[i].chargeRate <= 0 || array[i].chargeRate <= 0 )
+                printError(403);
+            if (array[i].numOfEV < 0)
+                printError(402);
             if (numOfLineData != 5)
-                printError(201);
+                printError(401);
         i++;
         }
     }
@@ -81,9 +85,12 @@ int readOptionsFile(enum options optionsArray[]) {
         while (!feof(fpointer)) { /*Læser fra fil så længe filpointer ikke er ved enden af filen*/
             fgets(singleline, FILE_LINE_LENGTH, fpointer);
             numOfLineData = sscanf(singleline, "%*[^:]:%d", &lineData); 
+            if (lineData < 0) 
+                printError(402);
             optionsArray[i] = lineData;
+
             if (numOfLineData != 1)
-                printError(201);
+                printError(401);
             i++;
         }
     }

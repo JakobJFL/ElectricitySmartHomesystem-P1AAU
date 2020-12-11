@@ -19,7 +19,7 @@ int main (void) {
     askForNewData();
     printf("Reading file: \n");
     if (readSpotPricesFile(priceArray, SPOT_PRICES_LEN)) 
-        printError(402);
+        printError(409);
 
     newArrayLen = getArrayIndexForPricesNow(priceArray, SPOT_PRICES_LEN);
     qsort(priceArray, newArrayLen, sizeof(spotPrices), compareSpotPrices);
