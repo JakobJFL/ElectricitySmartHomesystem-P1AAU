@@ -11,20 +11,20 @@ void askForNewData(void);
 
 int main (void) {
     int newArrayLen = 0;
-    spotPrices* elPrArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices));
-    if (elPrArray == NULL)
+    spotPrices* priceArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices));
+    if (priceArray == NULL)
         printError(100);
 
     srand(time(NULL));
     askForNewData();
     printf("Reading file: \n");
-    if (readSpotPricesFile(elPrArray, SPOT_PRICES_LEN)) 
+    if (readSpotPricesFile(priceArray, SPOT_PRICES_LEN)) 
         printError(402);
 
-    newArrayLen = getArrayIndexForPricesNow(elPrArray, SPOT_PRICES_LEN);
-    qsort(elPrArray, newArrayLen, sizeof(spotPrices), compareSpotPrices);
-    chargeEV(elPrArray);
-    free(elPrArray);
+    newArrayLen = getArrayIndexForPricesNow(priceArray, SPOT_PRICES_LEN);
+    qsort(priceArray, newArrayLen, sizeof(spotPrices), compareSpotPrices);
+    chargeEV(priceArray);
+    free(priceArray);
 
     return 0;
 }

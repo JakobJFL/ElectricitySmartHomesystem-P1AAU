@@ -5,7 +5,7 @@
 
 /* Oplader elbilerne ved at advokerer plads til et array, læse data fra en fil, 
 og køre de forskellige nedenstående funktioner hvor man til sidst ender med et array med alt data som printes.  */
-void chargeEV(spotPrices elPrArray[]) {
+void chargeEV(spotPrices priceArray[]) {
     static electricVehicle fileEvArray[FILE_MAX_LINE];
     electricVehicle* evArray; 
     int evArrayLen;
@@ -20,8 +20,8 @@ void chargeEV(spotPrices elPrArray[]) {
 
     setEvArrayValues(fileEvArray, FILE_MAX_LINE, evArray, evArrayLen);
     setBatteryCharge(evArray, evArrayLen);
-    chargeAndPrintEV(evArray, evArrayLen, elPrArray);
-    free(elPrArray);
+    chargeAndPrintEV(evArray, evArrayLen, priceArray);
+    free(priceArray);
 }
 
 /* Returnerer en sum af hvor mange elbiler der er af hver slags. */

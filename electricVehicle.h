@@ -17,7 +17,7 @@ typedef struct {
     float kmPrKwh;
 }electricVehicle;
 
-void chargeEV(spotPrices elPrArray[]);
+void chargeEV(spotPrices priceArray[]);
 int getSumOfEvs(electricVehicle array[], int arrayLen);
 void setEvArrayValues(electricVehicle arrayFile[], int arrayFileLen, electricVehicle evArray[], int evArrayLen);
 void setBatteryCharge(electricVehicle evArray[], int evArrayLen);
