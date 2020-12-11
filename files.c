@@ -6,8 +6,6 @@
 /*Funktionen readFile læser datafilen, og lægger det læste data ind i elPrArray*/
 int readSpotPricesFile(spotPrices elPrArray[], int elPrArrayLen) {
     FILE *fpointer;
-    float price = 0;
-    char date[DATE_MAX];
     char singleline[FILE_LINE_LENGTH];
     int i = 0;
     int numOfLineData = 0;

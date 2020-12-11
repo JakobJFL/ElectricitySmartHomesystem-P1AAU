@@ -2,9 +2,6 @@
 #include "spotPrices.h"
 #include "allError.h"
 
-/*Funktionen makeElspotPrice lægger data fra fil over i et struct, kaldet spotPrices. Funktionen kaldes i readFile*/
-
-
 /*Funktionen compareSpotPrices sammenligner elpriser, der anvendes af qsort-funktionen*/
 int compareSpotPrices(const void *p1, const void *p2) {
     const spotPrices *elem1 = p1;    
@@ -18,6 +15,7 @@ int compareSpotPrices(const void *p1, const void *p2) {
             return 0; 
 }
 
+/*  */
 int getArrayIndexForPricesNow(spotPrices array[], int arrayLen) {
     int i;
     time_t t = time(NULL);

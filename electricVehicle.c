@@ -62,7 +62,7 @@ void setBatteryCharge(electricVehicle evArray[], int evArrayLen){
 }
 
 /* Oplader alle elbilerne i: "evArray". Den sådan "Charge" er lig med "capacity" for alle elbiler. Herefter printes hver opladning. */
-void chargeAndPrintEV(electricVehicle evArray[], int evArrayLen, spotPrices elPrArray[]) {
+void chargeAndPrintEV(electricVehicle evArray[], int evArrayLen, spotPrices priceArray[]) {
     int numOfEvCharging = 2;
     int hourCount = 0;
     double evCharge = 0;
@@ -80,9 +80,9 @@ void chargeAndPrintEV(electricVehicle evArray[], int evArrayLen, spotPrices elPr
             hourCount++;
             printf("%d | Time: %s | Batteri opladet: %.3f MWh | Antal elbiler der oplader: %d | Elpris: %.2f EUR\n", 
                 hourCount, 
-                elPrArray[hourCount-1].date, 
+                priceArray[hourCount-1].date, 
                 evCharge/1000, numOfEvCharging, 
-                elPrArray[hourCount-1].price);
+                priceArray[hourCount-1].price);
         }
     }
     printf("Det tog: %d timer\n", hourCount);
