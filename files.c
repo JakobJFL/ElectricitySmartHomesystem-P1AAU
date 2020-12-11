@@ -54,11 +54,11 @@ int readFileEV(electricVehicle array[], int arrayLen){
             fgets(singleline, FILE_LINE_LENGTH, fpointer);
 
             numOfLineData = sscanf(singleline, "%[^;]; %f; %f; %d; %f", 
-            array[i].modelName, 
-            &array[i].capacity, 
-            &array[i].chargeRate, 
-            &array[i].numOfEV, 
-            &array[i].kmPrKwh);
+                array[i].modelName, 
+                &array[i].capacity, 
+                &array[i].chargeRate, 
+                &array[i].numOfEV, 
+                &array[i].kmPrKwh);
             
             if (numOfLineData != 5)
                 printError(201);
