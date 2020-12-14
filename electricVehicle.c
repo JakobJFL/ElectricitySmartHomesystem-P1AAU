@@ -11,12 +11,12 @@ void chargeEV(spotPrices priceArray[]) {
     int evArrayLen;
 
     if (readFileEV(fileEvArray, FILE_MAX_LINE)) 
-        printError(409);
+        printError(409, "EVdata.csv");
     evArrayLen = getSumOfEvs(fileEvArray, FILE_MAX_LINE);
 
     evArray = (electricVehicle*)malloc(evArrayLen*sizeof(electricVehicle));
     if (evArray == NULL)
-        printError(100);
+        printError(100, "");
 
     setEvArrayValues(fileEvArray, FILE_MAX_LINE, evArray, evArrayLen);
     setBatteryCharge(evArray, evArrayLen);
@@ -68,16 +68,16 @@ void chargeAndPrintEV(electricVehicle evArray[], int evArrayLen, spotPrices pric
     double evCharge = 0;
     double sumEvCharge = 0;
     int divideCh = getOption(divideCharging);
-    int divideCharging = getOption(maxLoad);
+    int loadMax = getOption(maxLoad);
 
     if (!divideCh) 
-        printError(403);
+        printError(403, "options.txt - divideCharging");
 
     /* Kører så længe at "chargeEvOneHour" ikke returnerer 0 altså at 0 elbiler blev opladet i den time 
     fordi der ikke er flere der skal oplades. */
     while (numOfEvCharging != 0) { 
         evCharge = 0;
-        numOfEvCharging = chargeEvOneHour(evArray, evArrayLen, evArrayLen/divideCh, divideCharging, &evCharge);
+        numOfEvCharging = chargeEvOneHour(evArray, evArrayLen, evArrayLen/divideCh, loadMax, &evCharge);
         sumEvCharge += evCharge;
         if (numOfEvCharging != 0) {
             hourCount++;

@@ -17,12 +17,12 @@ int readSpotPricesFile(spotPrices elPrArray[], int elPrArrayLen) {
             numOfLineData = sscanf(singleline, "%[^;];%f", elPrArray[i].date, &elPrArray[i].price);
             
             if (numOfLineData != 2)
-                printError(401);
+                printError(401, "output.csv");
             i++;
         }
     }
     else 
-        printError(404);
+        printError(404, "output.csv");
     
     return fclose(fpointer);
 }
@@ -34,7 +34,7 @@ int getOption(enum options option) {
     static int isFileRead;
     if (!isFileRead) {
         if(readOptionsFile(optionsArray)) 
-            printError(409);
+            printError(409, "options.txt");
         isFileRead = 1;
     }    
     return optionsArray[option];
@@ -58,17 +58,18 @@ int readFileEV(electricVehicle array[], int arrayLen){
                 &array[i].numOfEV, 
                 &array[i].kmPrKwh);
             
-            if (array[i].capacity <= 0 || array[i].chargeRate <= 0 || array[i].chargeRate <= 0 )
-                printError(403);
-            if (array[i].numOfEV < 0)
-                printError(402);
             if (numOfLineData != 5)
-                printError(401);
+                printError(401, "EVdata.csv");
+            else if (array[i].numOfEV < 0)
+                printError(402, "EVdata.csv - numOfEV");
+            else if (array[i].capacity <= 0 || array[i].chargeRate <= 0 || array[i].kmPrKwh <= 0 )
+                printError(403, "EVdata.csv - capacity or chargeRate or kmPrKwh");
+            
         i++;
         }
     }
     else 
-        printError(404);
+        printError(404, "EVdata.csv");
 
     return fclose(fpointer);
 }
@@ -86,16 +87,16 @@ int readOptionsFile(enum options optionsArray[]) {
             fgets(singleline, FILE_LINE_LENGTH, fpointer);
             numOfLineData = sscanf(singleline, "%*[^:]:%d", &lineData); 
             if (lineData < 0) 
-                printError(402);
+                printError(402, "options.txt");
             optionsArray[i] = lineData;
 
             if (numOfLineData != 1)
-                printError(401);
+                printError(401, "options.txt");
             i++;
         }
     }
     else 
-        printError(404);
+        printError(404, "options.txt");
 
     return fclose(fpointer);
 }

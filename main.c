@@ -13,13 +13,13 @@ int main (void) {
     int newArrayLen = 0;
     spotPrices* priceArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices));
     if (priceArray == NULL)
-        printError(100);
+        printError(100, "");
 
     srand(time(NULL));
     askForNewData();
     printf("Reading file: \n");
     if (readSpotPricesFile(priceArray, SPOT_PRICES_LEN)) 
-        printError(409);
+        printError(409, "");
 
     newArrayLen = getArrayIndexForPricesNow(priceArray, SPOT_PRICES_LEN);
     qsort(priceArray, newArrayLen, sizeof(spotPrices), compareSpotPrices);

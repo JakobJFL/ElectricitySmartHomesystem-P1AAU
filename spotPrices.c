@@ -28,6 +28,6 @@ int getArrayIndexForPricesNow(spotPrices array[], int arrayLen) {
             return i+1;
         }
     }
-    printError(202); /*Printer fejlkode hvis der ikke findes nogen ens dato og tid*/
+    printError(202, "output.csv"); /*Printer fejlkode hvis der ikke findes nogen ens dato og tid*/
     return 0; 
 }

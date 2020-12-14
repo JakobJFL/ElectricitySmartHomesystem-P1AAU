@@ -1,4 +1,5 @@
 Electric grid max load[KWh]: 500000;
 Divide max charging with: 3;
-Random min distance driven[km]: 20;
+Random min distance driven[km]: 20
 Random max distance driven[km]: 70;
+
