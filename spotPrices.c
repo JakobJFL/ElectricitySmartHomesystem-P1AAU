@@ -15,8 +15,8 @@ int compareSpotPrices(const void *p1, const void *p2) {
             return 0; 
 }
 
-/*  */
-int getArrayIndexForPricesNow(spotPrices array[], int arrayLen, struct tm tm) {
+/* Returnerer index for et bestemt tidspunkt */
+int getArrayIndex(spotPrices array[], int arrayLen, struct tm tm) {
     int i;
     char timeDate[DATE_MAX];
     sprintf(timeDate, "%d-%02d-%02d %02d", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour);

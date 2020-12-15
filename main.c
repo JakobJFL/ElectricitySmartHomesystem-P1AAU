@@ -23,7 +23,7 @@ int main (void) {
     if (readSpotPricesFile(priceArray, SPOT_PRICES_LEN)) 
         printError(409, "");
 
-    newArrayLen = getArrayIndexForPricesNow(priceArray, SPOT_PRICES_LEN, tm);
+    newArrayLen = getArrayIndex(priceArray, SPOT_PRICES_LEN, tm);
     qsort(priceArray, newArrayLen, sizeof(spotPrices), compareSpotPrices);
     chargeEV(priceArray);
     free(priceArray);
