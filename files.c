@@ -79,20 +79,19 @@ int readOptionsFile(enum options optionsArray[]) {
     FILE *fpointer = fopen("options.txt", "r"); 
     char singleline[FILE_LINE_LENGTH];
     int numOfLineData = 0;
-    int i = 0;
     int lineData = 0;
+    int i;
 
     if (fpointer != NULL) {
-        while (!feof(fpointer)) { /*Læser fra fil så længe filpointer ikke er ved enden af filen*/
+        for (i = 0; i < OPTIONS_LENGTH; i++) {
             fgets(singleline, FILE_LINE_LENGTH, fpointer);
             numOfLineData = sscanf(singleline, "%*[^:]:%d", &lineData); 
             if (lineData < 0) 
                 printError(402, "options.txt");
             optionsArray[i] = lineData;
 
-            if (numOfLineData != 1)
+            if (numOfLineData != 1 || feof(fpointer))
                 printError(401, "options.txt");
-            i++;
         }
     }
     else 
