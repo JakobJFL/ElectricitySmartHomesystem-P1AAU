@@ -19,7 +19,7 @@ int main (void) {
     srand(time(NULL));
 
     askForNewData();
-    printf("Oplader elbiler: \n");
+    printf("Charging electric cars: \n");
     if (readSpotPricesFile(priceArray, SPOT_PRICES_LEN)) 
         printError(409, "output.csv");
 

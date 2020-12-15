@@ -81,15 +81,15 @@ void chargeAndPrintEV(electricVehicle evArray[], int evArrayLen, spotPrices pric
         sumEvCharge += evCharge;
         if (numOfEvCharging != 0) {
             hourCount++;
-            printf("%d | Time: %s | Batteri opladet: %.3f MWh | Antal elbiler der oplader: %d | Elpris: %.2f EUR\n", 
+            printf("%d | Date: %s | Batteries charged: %.3f MWh | Electric cars charging: %d | Electricity price: %.2f EUR\n", 
                 hourCount, 
                 priceArray[hourCount-1].date, 
                 evCharge/1000, numOfEvCharging, 
                 priceArray[hourCount-1].price);
         }
     }
-    printf("Det tog: %d timer\n", hourCount);
-    printf("Batteri opladet i alt: %.3f MWh", sumEvCharge/1000);
+    printf("It took %d hours\n", hourCount);
+    printf("Power used: %.3f MWh", sumEvCharge/1000);
 }
 
 /* Oplader elbilerne for en time ved at ligge "chargeRate" til "charge" på hver elbil i "evArray" 
