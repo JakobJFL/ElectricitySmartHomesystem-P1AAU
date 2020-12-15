@@ -16,7 +16,7 @@ void chargeEV(spotPrices priceArray[]) {
 
     evArray = (electricVehicle*)malloc(evArrayLen*sizeof(electricVehicle));
     if (evArray == NULL)
-        printError(100, "");
+        printError(100, "evArray");
 
     setEvArrayValues(fileEvArray, FILE_MAX_LINE, evArray, evArrayLen);
     setBatteryCharge(evArray, evArrayLen);

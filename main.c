@@ -15,13 +15,13 @@ int main (void) {
     struct tm tm = *localtime(&t); /*Der laves et struct over nuværende år, dag og time*/
     spotPrices* priceArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices));
     if (priceArray == NULL)
-        printError(100, "");
+        printError(100, "priceArray");
     srand(time(NULL));
 
     askForNewData();
     printf("Reading file: \n");
     if (readSpotPricesFile(priceArray, SPOT_PRICES_LEN)) 
-        printError(409, "");
+        printError(409, "output.csv");
 
     newArrayLen = getArrayIndex(priceArray, SPOT_PRICES_LEN, tm);
     qsort(priceArray, newArrayLen, sizeof(spotPrices), compareSpotPrices);
