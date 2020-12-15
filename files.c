@@ -90,7 +90,7 @@ int readOptionsFile(enum options optionsArray[]) {
                 printError(402, "options.txt");
             optionsArray[i] = lineData;
 
-            if (numOfLineData != 1 || feof(fpointer))
+            if (numOfLineData != 1)
                 printError(401, "options.txt");
         }
     }
