@@ -13,4 +13,4 @@ typedef struct {
 
 int compareSpotPrices(const void *ep1, const void *ep2);
 void printspotPricesArray(spotPrices array[], int arrayLength);
-int getArrayIndexForPricesNow(spotPrices array[], int arrayLen);
+int getArrayIndexForPricesNow(spotPrices array[], int arrayLen, struct tm tm);

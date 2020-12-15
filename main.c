@@ -11,17 +11,19 @@ void askForNewData(void);
 
 int main (void) {
     int newArrayLen = 0;
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t); /*Der laves et struct over nuværende år, dag og time*/
     spotPrices* priceArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices));
     if (priceArray == NULL)
         printError(100, "");
-
     srand(time(NULL));
+
     askForNewData();
     printf("Reading file: \n");
     if (readSpotPricesFile(priceArray, SPOT_PRICES_LEN)) 
         printError(409, "");
 
-    newArrayLen = getArrayIndexForPricesNow(priceArray, SPOT_PRICES_LEN);
+    newArrayLen = getArrayIndexForPricesNow(priceArray, SPOT_PRICES_LEN, tm);
     qsort(priceArray, newArrayLen, sizeof(spotPrices), compareSpotPrices);
     chargeEV(priceArray);
     free(priceArray);
@@ -35,5 +37,5 @@ void askForNewData(void) {
     printf("Do you want to get new data? Type \"y\" for yes and \"n\" for no: ");
     scanf(" %c", &yn);
     if (yn == 'y') 
-        system("APIGetElspotPrices\\ElspotPrices.exe");/*Kører C#-program, der henter data fra API*/
+        system("APIGetElspotPrices\\ElspotPrices.exe"); /*Kører C#-program, der henter data fra API*/
 }

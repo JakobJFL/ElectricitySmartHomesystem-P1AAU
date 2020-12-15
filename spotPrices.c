@@ -16,12 +16,9 @@ int compareSpotPrices(const void *p1, const void *p2) {
 }
 
 /*  */
-int getArrayIndexForPricesNow(spotPrices array[], int arrayLen) {
+int getArrayIndexForPricesNow(spotPrices array[], int arrayLen, struct tm tm) {
     int i;
-    time_t t = time(NULL);
-    struct tm tm = *localtime(&t); /*Der laves et struct over nuværende år, dag og time*/
     char timeDate[DATE_MAX];
-    
     sprintf(timeDate, "%d-%02d-%02d %02d", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour);
     for (i = 0; i < arrayLen; i++) {
         if (strcmp(array[i].date, timeDate) == 0) { /*Tjekker om der er ens dato og tid, med den hentede data fra C#-programmet*/
