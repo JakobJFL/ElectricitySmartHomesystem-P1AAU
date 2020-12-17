@@ -21,9 +21,9 @@ int main (void) {
     askForNewData();
     if (readSpotPricesFile(priceArray, SPOT_PRICES_LEN)) 
         printError(409, "output.csv");
+
     newArrayLen = getArrayIndex(priceArray, SPOT_PRICES_LEN, tm);
     printCurrentPrice(priceArray, newArrayLen);
-
     printf("Charging electric cars: \n");
     qsort(priceArray, newArrayLen, sizeof(spotPrices), compareSpotPrices);
     chargeEV(priceArray);
