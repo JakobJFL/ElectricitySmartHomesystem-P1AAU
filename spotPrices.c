@@ -21,7 +21,7 @@ int getArrayIndex(spotPrices array[], int arrayLen, struct tm tm) {
     char timeDate[DATE_MAX];
     sprintf(timeDate, "%d-%02d-%02d %02d", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour);
     for (i = 0; i < arrayLen; i++) {
-        if (strcmp(array[i].date, timeDate) == 0) /*Tjekker om der er ens dato og tid, med den hentede data fra C#-programmet*/;
+        if (strcmp(array[i].date, timeDate) == 0) /*Tjekker om der er ens dato og tid, med den hentede data fra C#-programmet*/
             return i;
     }
     printError(202, "output.csv"); /*Printer fejlkode hvis der ikke findes nogen ens dato og tid*/
@@ -29,5 +29,5 @@ int getArrayIndex(spotPrices array[], int arrayLen, struct tm tm) {
 }
 
 void printCurrentPrice(spotPrices array[], int arrayLen) {
-    printf("The price right now is: %.2f %s\n", array[arrayLen].price, array[arrayLen].date);
+    printf("The price right now is: %.2f EUR.\n", array[arrayLen].price);
 }
