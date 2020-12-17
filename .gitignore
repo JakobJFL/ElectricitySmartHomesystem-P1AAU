@@ -1,5 +1,5 @@
 run.exe
 spotPrices.o
 electricVehicle.o
-allErrorFile.o
 allError.o
+files.o
