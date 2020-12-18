@@ -16,7 +16,7 @@ int main (void) {
     spotPrices* priceArray = (spotPrices*)malloc(SPOT_PRICES_LEN*sizeof(spotPrices));
     if (priceArray == NULL)
         printError(100, "priceArray");
-    srand(time(NULL));
+    srand(t);
 
     askForNewData();
     if (readSpotPricesFile(priceArray, SPOT_PRICES_LEN)) 
@@ -37,6 +37,7 @@ void askForNewData(void) {
     char yn;
     printf("Do you want to get new data? Type \"y\" for yes and \"n\" for no: ");
     scanf(" %c", &yn);
-    if (yn == 'y') 
+    if (yn == 'y')
         system("APIGetElspotPrices\\ElspotPrices.exe"); /*Kører C#-program, der henter data fra API*/
+        
 }

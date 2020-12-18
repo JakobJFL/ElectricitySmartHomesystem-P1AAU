@@ -21,7 +21,7 @@ void chargeEV(spotPrices priceArray[]) {
     setEvArrayValues(fileEvArray, FILE_MAX_LINE, evArray, evArrayLen);
     setBatteryCharge(evArray, evArrayLen);
     chargeAndPrintEV(evArray, evArrayLen, priceArray);
-    free(priceArray);
+    free(evArray);
 }
 
 /* Returnerer en sum af hvor mange elbiler der er af hver slags. */

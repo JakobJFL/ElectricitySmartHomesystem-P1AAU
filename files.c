@@ -9,7 +9,6 @@ int readSpotPricesFile(spotPrices elPrArray[], int elPrArrayLen) {
     char singleline[FILE_LINE_LENGTH];
     int i = 0;
     int numOfLineData = 0;
-
     fpointer = fopen("output.csv", "r"); /*Åbner fil i readmode, derfor: "r"*/
     if (fpointer != NULL) {
         while (!feof(fpointer)){
@@ -23,7 +22,6 @@ int readSpotPricesFile(spotPrices elPrArray[], int elPrArrayLen) {
     }
     else 
         printError(404, "output.csv");
-    
     return fclose(fpointer);
 }
 
