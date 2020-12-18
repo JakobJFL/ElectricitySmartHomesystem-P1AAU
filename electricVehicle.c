@@ -86,7 +86,7 @@ void chargeAndPrintEV(electricVehicle evArray[], int evArrayLen, spotPrices pric
                 priceArray[hourCount-1].date, 
                 evCharge/1000, numOfEvCharging, 
                 priceArray[hourCount-1].price);
-        }
+        } 
     }
     printf("It took %d hours\n", hourCount);
     printf("Power used: %.3f MWh", sumEvCharge/1000);
